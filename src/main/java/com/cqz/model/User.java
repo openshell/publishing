@@ -1,6 +1,10 @@
 package com.cqz.model;
 
 import java.util.Date;
+/**
+ * @Author: openshell
+ * @Description:
+ */
 
 public class User {
     private Integer userId;
