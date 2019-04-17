@@ -32,4 +32,10 @@ public class UserServiceImpl implements UserService {
         PageInfo pageInfo=new PageInfo(users);
         return pageInfo;
     }
+
+    @Override
+    public User getUserByName(String userName) {
+
+        return userMapper.selectByUserName(userName);
+    }
 }

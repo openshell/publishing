@@ -1,6 +1,7 @@
 package com.cqz.dao;
 
 import com.cqz.model.User;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -9,8 +10,26 @@ import java.util.List;
  * @Author: openshell
  * @Description:
  */
+@Repository
 public interface UserMapper {
 
+    /**
+     * 获得密码
+     * @author openshell
+     * @date 2019/4/17
+     * @param username
+     * @return java.lang.String
+     */
+    String getPassword(String username);
+
+    /**
+     * 获得用户启用状态
+     * @author openshell
+     * @date 2019/4/17
+     * @param username
+     * @return java.lang.String
+     */
+    String getRole(String username);
     /**
      * 查询全部用户
      * @author openshell
@@ -73,4 +92,13 @@ public interface UserMapper {
      * @return int
      */
     int updateByPrimaryKey(User record);
+
+    /**
+     * 根据用户名查询用户
+     * @author openshell
+     * @date 2019/4/17
+     * @param userName
+     * @return com.cqz.model.User
+     */
+    User selectByUserName(String userName);
 }

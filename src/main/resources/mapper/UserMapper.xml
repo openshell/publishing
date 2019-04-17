@@ -21,12 +21,24 @@
     where user_id = #{userId,jdbcType=INTEGER}
   </select>
 
+
+
   <select id="selectAllUser" resultMap="BaseResultMap">
         SELECT
         *
         FROM
         t_user
     </select>
+
+  <select id="selectByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT
+    *
+    FROM
+    t_user
+    WHERE
+      user_name=#{userName}
+
+  </select>
 
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
