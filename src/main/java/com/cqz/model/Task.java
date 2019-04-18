@@ -1,6 +1,6 @@
 package com.cqz.model;
 
-import java.sql.Date;
+import java.util.Date;
 /**
  * @Author: openshell
  * @Description:
@@ -21,6 +21,10 @@ public class Task {
     private Date taskStartTime;
 
     private Date taskEndTime;
+
+    private String formatTaskStartTime;
+
+    private String formatTaskEndTime;
 
     private String taskStatus;
 
@@ -104,5 +108,39 @@ public class Task {
 
     public void setTaskDescription(String taskDescription) {
         this.taskDescription = taskDescription == null ? null : taskDescription.trim();
+    }
+
+    public String getFormatTaskStartTime() {
+        return formatTaskStartTime;
+    }
+
+    public void setFormatTaskStartTime(String formatTaskStartTime) {
+        this.formatTaskStartTime = formatTaskStartTime;
+    }
+
+    public String getFormatTaskEndTime() {
+        return formatTaskEndTime;
+    }
+
+    public void setFormatTaskEndTime(String formatTaskEndTime) {
+        this.formatTaskEndTime = formatTaskEndTime;
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "taskId=" + taskId +
+                ", taskName='" + taskName + '\'' +
+                ", taskType='" + taskType + '\'' +
+                ", taskCharge='" + taskCharge + '\'' +
+                ", taskSelectPeople='" + taskSelectPeople + '\'' +
+                ", taskRunner='" + taskRunner + '\'' +
+                ", taskStartTime=" + taskStartTime +
+                ", taskEndTime=" + taskEndTime +
+                ", formatTaskStartTime='" + formatTaskStartTime + '\'' +
+                ", formatTaskEndTime='" + formatTaskEndTime + '\'' +
+                ", taskStatus='" + taskStatus + '\'' +
+                ", taskDescription='" + taskDescription + '\'' +
+                '}';
     }
 }

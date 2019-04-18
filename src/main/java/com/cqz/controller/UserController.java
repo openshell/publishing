@@ -65,9 +65,9 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value="/allUser")
+    @RequestMapping(value="/toAllUser")
     public String toAllUser(){
-        return "/account/allUser.html";
+        return "account/allUser";
     }
 
     @RequestMapping(value={"toLogin","logout"})

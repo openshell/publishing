@@ -31,8 +31,8 @@ public class UserServiceImpl implements UserService {
         PageHelper.startPage(pageNum,pageSize);
         List<User> users= userMapper.selectAllUser();
         for (User user: users) {
-            user.setFormatUserRegisterTime(FormatDate.getFormatDate(user.getUserRegisterTime()));
-            user.setFormatUserLoginTime(FormatDate.getFormatDate(user.getUserLoginTime()));
+            user.setFormatUserRegisterTime(FormatDate.getFormatDateWithTime(user.getUserRegisterTime()));
+            user.setFormatUserLoginTime(FormatDate.getFormatDateWithTime(user.getUserLoginTime()));
         }
         PageInfo pageInfo=new PageInfo(users);
         return pageInfo;
@@ -41,8 +41,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserByName(String userName) {
         User user=userMapper.selectByUserName(userName);
-        user.setFormatUserRegisterTime(FormatDate.getFormatDate(user.getUserRegisterTime()));
-        user.setFormatUserLoginTime(FormatDate.getFormatDate(user.getUserLoginTime()));
+        user.setFormatUserRegisterTime(FormatDate.getFormatDateWithTime(user.getUserRegisterTime()));
+        user.setFormatUserLoginTime(FormatDate.getFormatDateWithTime(user.getUserLoginTime()));
         return user;
     }
 }

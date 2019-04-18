@@ -1,6 +1,9 @@
 package com.cqz.dao;
 
 import com.cqz.model.Task;
+
+import java.util.List;
+
 /**
  * @Author: openshell
  * @Description:
@@ -58,4 +61,33 @@ public interface TaskMapper {
      * @return int
      */
     int updateByPrimaryKey(Task record);
+
+    /**
+     * 查询所有任务
+     * @author openshell
+     * @date 2019/4/18
+     * @param
+     * @return java.util.List<com.cqz.model.Task>
+     */
+    List<Task> selectAllTask();
+
+    /**
+     * 根据任务名查询任务
+     * @author openshell
+     * @date 2019/4/18
+     * @param searchKey
+     * @return java.util.List<com.cqz.model.Task>
+     */
+    List<Task> selectTaskByName(String searchKey);
+
+    /**
+     * 根据用户Id查询任务
+     * @author openshell
+     * @date 2019/4/18
+     * @param [userId]
+     * @return java.util.List<com.cqz.model.Task>
+     */
+    List<Task> selectBackLog(int userId);
+
+
 }

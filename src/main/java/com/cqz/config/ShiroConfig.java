@@ -40,7 +40,7 @@ public class ShiroConfig {
          shiroFilterFactoryBean.setLoginUrl("/user/toLogin");
         // 设置无权限时跳转的 url;
         shiroFilterFactoryBean.setUnauthorizedUrl("/user/toLogin");
-        shiroFilterFactoryBean.setSuccessUrl("/user/**");
+//        shiroFilterFactoryBean.setSuccessUrl("/user/**");
         // 设置拦截器
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         //开放所有权限（测试用）

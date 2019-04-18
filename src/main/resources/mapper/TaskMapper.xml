@@ -23,10 +23,41 @@
     from t_task
     where task_id = #{taskId,jdbcType=INTEGER}
   </select>
+  <select id="selectAllTask" resultMap="BaseResultMap">
+    SELECT
+    *
+    FROM
+    t_task
+
+  </select>
+
+  <select id="selectTaskByName" resultMap="BaseResultMap">
+    SELECT
+    *
+    FROM
+    t_task
+    WHERE task_name LIKE #{taskName}
+
+  </select>
+
+
+  <select id="selectBackLog" resultMap="BaseResultMap">
+ select
+    <include refid="Base_Column_List" />
+from t_rele as r
+left join t_task as t on r.rele_task_id=t.task_id
+where r.rele_user_id="1"
+
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from t_task
     where task_id = #{taskId,jdbcType=INTEGER}
   </delete>
+
+
+
+
   <insert id="insert" parameterType="com.cqz.model.Task" >
     insert into t_task (task_id, task_name, task_type, 
       task_charge, task_select_people, task_runner, 
