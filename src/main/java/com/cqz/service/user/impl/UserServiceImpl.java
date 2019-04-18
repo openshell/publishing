@@ -3,6 +3,7 @@ package com.cqz.service.user.impl;
 import com.cqz.dao.UserMapper;
 import com.cqz.model.User;
 import com.cqz.service.user.UserService;
+import com.cqz.utils.FormatDate;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +30,19 @@ public class UserServiceImpl implements UserService {
     public PageInfo<User> findAllUser(int pageNum, int pageSize) {
         PageHelper.startPage(pageNum,pageSize);
         List<User> users= userMapper.selectAllUser();
+        for (User user: users) {
+            user.setFormatUserRegisterTime(FormatDate.getFormatDate(user.getUserRegisterTime()));
+            user.setFormatUserLoginTime(FormatDate.getFormatDate(user.getUserLoginTime()));
+        }
         PageInfo pageInfo=new PageInfo(users);
         return pageInfo;
     }
 
     @Override
     public User getUserByName(String userName) {
-
-        return userMapper.selectByUserName(userName);
+        User user=userMapper.selectByUserName(userName);
+        user.setFormatUserRegisterTime(FormatDate.getFormatDate(user.getUserRegisterTime()));
+        user.setFormatUserLoginTime(FormatDate.getFormatDate(user.getUserLoginTime()));
+        return user;
     }
 }

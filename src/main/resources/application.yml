@@ -4,9 +4,6 @@ server:
 spring:
   thymeleaf:
     cache: false #关闭缓存
-  devtools:
-    restart:
-      enabled: true  #设置开启热部署
   freemarker:
       cache: false #页面不加载缓存，修改即时生效
   datasource:
@@ -55,4 +52,4 @@ pagehelper:
 
 logging:
   level:
-    com.cqz.dao: debug
+    com.cqz.*: debug

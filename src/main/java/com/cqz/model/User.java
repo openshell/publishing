@@ -21,6 +21,26 @@ public class User {
 
     private Date userLoginTime;
 
+    private String formatUserRegisterTime;
+
+    private String formatUserLoginTime;
+
+    public String getFormatUserLoginTime() {
+        return formatUserLoginTime;
+    }
+
+    public void setFormatUserLoginTime(String formatUserLoginTime) {
+        this.formatUserLoginTime = formatUserLoginTime;
+    }
+
+    public String getFormatUserRegisterTime() {
+        return formatUserRegisterTime;
+    }
+
+    public void setFormatUserRegisterTime(String formatUserRegisterTime) {
+        this.formatUserRegisterTime = formatUserRegisterTime;
+    }
+
     public Integer getUserId() {
         return userId;
     }

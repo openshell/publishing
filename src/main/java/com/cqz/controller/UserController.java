@@ -35,8 +35,11 @@ public class UserController {
                     int pageNum,
             @RequestParam(name = "pageSize", required = false, defaultValue = "10")
                     int pageSize){
-        return Msg.success().add("list",userService.findAllUser(pageNum,pageSize));
+        return Msg.success().add("pageInfo",userService.findAllUser(pageNum,pageSize));
     }
+
+
+
     @RequestMapping(value="/login",method=RequestMethod.GET)
     public String getLogin(@RequestParam("userName")String userName, @RequestParam("userPassword")String userPassword, HttpServletRequest request) {
 
@@ -49,7 +52,8 @@ public class UserController {
             request.getSession().setAttribute("loginUser", user);
             System.out.println("验证账户是否为启用："+subject.isPermitted("enable"));
             if(subject.isPermitted("enable")) {
-                return "/user/home";
+                request.getSession().setAttribute("loginUser",user);
+                return "/account/backLog";
             }
             return "/index";
 
@@ -59,6 +63,16 @@ public class UserController {
             request.setAttribute("error", "用户名或密码错误");
             return "login";
         }
+    }
+
+    @RequestMapping(value="/allUser")
+    public String toAllUser(){
+        return "/account/allUser.html";
+    }
+
+    @RequestMapping(value={"toLogin","logout"})
+    public String toLogin(){
+        return "login";
     }
 
 }

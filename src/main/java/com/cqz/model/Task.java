@@ -1,6 +1,6 @@
 package com.cqz.model;
 
-import java.util.Date;
+import java.sql.Date;
 /**
  * @Author: openshell
  * @Description:

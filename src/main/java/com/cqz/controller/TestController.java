@@ -10,7 +10,9 @@ import java.util.Map;
  * @date 2019/4/17
  */
 @Controller
+@RequestMapping("/task")
 public class TestController {
+
 
     @RequestMapping("home")
     public String goHome(Map<String ,Object> paraMap){
@@ -22,4 +24,6 @@ public class TestController {
     public String goLogin(){
         return "login";
     }
+
+
 }
