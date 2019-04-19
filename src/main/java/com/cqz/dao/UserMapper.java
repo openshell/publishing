@@ -101,4 +101,14 @@ public interface UserMapper {
      * @return com.cqz.model.User
      */
     User selectByUserName(String userName);
+
+
+    /**
+     *
+     * @author openshell
+     * @date 2019/4/19
+     * @param [userName]
+     * @return int
+     */
+    int countUserByName(String userName);
 }

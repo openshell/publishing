@@ -1,9 +1,77 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.cqz.dao.ReleMapper" >
-    <insert id="updateRele" parameterType="">
-        insert into
+  <resultMap id="BaseResultMap" type="com.cqz.model.Rele" >
+    <id column="rele_id" property="releId" jdbcType="INTEGER" />
+    <result column="rele_user_id" property="releUserId" jdbcType="INTEGER" />
+    <result column="rele_task_id" property="releTaskId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    rele_id, rele_user_id, rele_task_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_rele
+    where rele_id = #{releId,jdbcType=INTEGER}
+  </select>
 
-    </insert>
+  <select id="checkRele" resultType="java.lang.Integer">
+    select count(*) from t_rele r where rele_user_id=#{userId} and rele_task_id=#{taskId}
+  </select>
 
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_rele
+    where rele_id = #{releId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cqz.model.Rele" >
+    insert into t_rele (rele_id, rele_user_id, rele_task_id
+      )
+    values (#{releId,jdbcType=INTEGER}, #{releUserId,jdbcType=INTEGER}, #{releTaskId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cqz.model.Rele" >
+    insert into t_rele
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="releId != null" >
+        rele_id,
+      </if>
+      <if test="releUserId != null" >
+        rele_user_id,
+      </if>
+      <if test="releTaskId != null" >
+        rele_task_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="releId != null" >
+        #{releId,jdbcType=INTEGER},
+      </if>
+      <if test="releUserId != null" >
+        #{releUserId,jdbcType=INTEGER},
+      </if>
+      <if test="releTaskId != null" >
+        #{releTaskId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cqz.model.Rele" >
+    update t_rele
+    <set >
+      <if test="releUserId != null" >
+        rele_user_id = #{releUserId,jdbcType=INTEGER},
+      </if>
+      <if test="releTaskId != null" >
+        rele_task_id = #{releTaskId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where rele_id = #{releId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cqz.model.Rele" >
+    update t_rele
+    set rele_user_id = #{releUserId,jdbcType=INTEGER},
+      rele_task_id = #{releTaskId,jdbcType=INTEGER}
+    where rele_id = #{releId,jdbcType=INTEGER}
+  </update>
 </mapper>

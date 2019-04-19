@@ -2,6 +2,7 @@ package com.cqz.service.task.impl;
 
 import com.cqz.dao.ReleMapper;
 import com.cqz.dao.TaskMapper;
+import com.cqz.model.Rele;
 import com.cqz.model.Task;
 import com.cqz.service.task.TaskService;
 import com.cqz.utils.FormatDate;
@@ -71,10 +72,17 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public int claimTask(int taskId,int userId) {
         Task task=new Task();
+        Rele rele=new Rele();
+        rele.setReleTaskId(taskId);
+        rele.setReleUserId(userId);
         task.setTaskId(taskId);
         task.setTaskStatus("2");
+        if(releMapper.checkRele(userId,taskId)!=0){
+            return 0;
+        }
+        releMapper.selectByPrimaryKey(rele.getReleId());
         taskMapper.updateByPrimaryKeySelective(task);
-        releMapper.updateRele(userId,taskId);
-        return 0;
+        releMapper.insertSelective(rele);
+        return releMapper.insertSelective(rele);
     }
 }

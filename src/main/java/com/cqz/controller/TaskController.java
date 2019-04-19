@@ -76,15 +76,18 @@ public class TaskController {
         return Msg.success().add("task",taskService.selectTaskById(taskId));
     }
 
-        @ResponseBody
+    @ResponseBody
     @RequestMapping(value="/claim",method= RequestMethod.GET)
     public Msg claimTask(@RequestParam(name="taskId",required = false) int taskId,
         @RequestParam(name="userId",required = false) int userId
         ){
 
-        return Msg.success().add("task",taskService.claimTask(taskId,userId));
+        if(taskService.claimTask(taskId,userId)>1){
+            return Msg.success();
+        }else{
+            return Msg.fail();
+        }
     }
-
 
     @RequestMapping(value = "/toAllTask")
     public String toAllTask(){

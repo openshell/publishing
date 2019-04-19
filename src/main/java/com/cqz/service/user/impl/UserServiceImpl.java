@@ -45,4 +45,10 @@ public class UserServiceImpl implements UserService {
         user.setFormatUserLoginTime(FormatDate.getFormatDateWithTime(user.getUserLoginTime()));
         return user;
     }
+
+    @Override
+    public int checkName(String userName) {
+
+        return userMapper.countUserByName(userName);
+    }
 }

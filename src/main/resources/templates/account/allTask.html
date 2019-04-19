@@ -13,6 +13,9 @@
     <link rel="stylesheet" type="text/css"
           href="/css/bootstrap-datetimepicker.css"
           media="all"/>
+
+    <!-- 插件使用的样式表文件 -->
+    <link rel="stylesheet" href="/css/selectpage.css" type="text/css">
 </head>
 <body class="app sidebar-mini rtl">
 
@@ -77,6 +80,7 @@
         <!--任务新建模态框-->
         <div class="modal fade" id="taskAddModal" tabindex="-1" role="dialog"
              aria-labelledby="myModalLabel">
+            <input type="text"  class="form-control input-sm" id="selectPage" >
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -104,17 +108,16 @@
                                                                         name="taskType" id="gender1_add_input" value="claim"
                                                                         checked="checked"> 认领制
                                     </label> <label class="radio-inline"> <input type="radio"
-                                                                                 name="taskType" id="gender2_add_input" value="coordinate"> 协同制
+                                                                                 name="taskType" id="gender2_add_input" value="coordination"> 协同制
                                 </label>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">人员选择</label>
-                                <div class="col-sm-10">
-                                    <input type="text" name="taskSelectPeople" class="form-control"
-                                           id="taskSelectPeople_add_input" placeholder="人员选择"> <span
-                                        class="help-block"></span>
-                                </div>
+                                <label class="col-sm-3 control-label">人员选择</label>
+
+
+                                    <span class="help-block"></span>
+
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">说明</label>
@@ -185,6 +188,8 @@
                                             class="help-block"></span>
                                 </div>
                                 <input type="hidden" name="taskCharge" th:value="${session.loginUser.userName}" >
+                                <input type="hidden" name="userId"  id="userId" th:value="${session.loginUser.userId}" >
+                                <input type="hidden" name="taskId"  id="taskId"  >
                             </div>
 
                         </form>
@@ -198,9 +203,26 @@
         </div>
 
 
+        <!--人员选择模态框-->
+        <div class="modal fade" id="testModal" tabindex="-1" role="dialog"
+             aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="modal-title">测试框</h4>
+                        <button type="button" class="close" data-dismiss="modal"
+                                aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
 
+                    </div>
+                    <div class="modal-body">
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <div class="row">
+            <div class="row">
             <div class="col-md-7">
                 <div class="navbar-form navbar-left" role="search">
                     <div class="form-group">
@@ -254,7 +276,6 @@
                         <th>发布日期</th>
                         <th>状态</th>
                         <th>操作</th>
-
                     </tr>
                     </thead>
                     <tbody>
@@ -269,20 +290,41 @@
             <div class="col-md-6" id="page_info_area"></div>
             <!-- 分页条信息 -->
             <div class="col-md-6" id="page_nav_area"></div>
+
         </div>
     </div>
 </main>
 
 
-<script src="/webjars/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://upcdn.b0.upaiyun.com/libs/jquery/jquery-2.0.2.min.js"></script>
 <script src="/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
 <script src="/js/popper.min.js"></script>
 <script src="/js/main.js"></script>
 <script src="/js/bootstrap-datetimepicker.min.js"></script>
 <script src="/js/bootstrap-datetimepicker.zh-CN.js"></script>
 
+<!-- 下拉分页插件核心脚本 -->
+<script src="/js/selectpage.js"></script>
+
+
 <script type="text/javascript">
+
+
+    //定义数组，在服务端返回的数据也以该格式返回：Array[{Object},{...}]
+    var tag_data = [
+        {id:1 ,name:'Chicago Bulls',desc:'芝加哥公牛'},
+        {id:2 ,name:'Cleveland Cavaliers',desc:'克里夫兰骑士'},
+        {id:3 ,name:'Detroit Pistons',desc:'底特律活塞'},
+        {id:4 ,name:'Indiana Pacers',desc:'印第安纳步行者'}
+    ];
+    //初始化插件
+    $('#selectPage').selectPage({
+        showField : 'desc',
+        keyField : 'id',
+        data : tag_data
+    });
     var totalRecord;
+    var userId=$("#userId").val();
     $(function () {
         to_page(1);
     });
@@ -496,6 +538,7 @@
             backdrop : "static"
         });
     });
+
     $(document).on("click", ".edit_btn", function() {
         getTask($(this).attr("edit-id"))
         $("#emp_edit_btn").attr("edit_id",$(this).attr("edit-id"));
@@ -503,6 +546,8 @@
             backdrop : "static"
         });
     });
+
+
 
     function getTask(taskId) {
         $.ajax({
@@ -512,10 +557,10 @@
                 console.log(result);
                 var taskDate = result.extend.task;
                 $("#taskName_view").val(taskDate.taskName);
-                $("#email_edit_input").val(empDate.empEmail);
                 $("#taskClaimModal input[name=taskType]").val(
-                    [ task.taskType ]);
-                $("#taskDescription_view").val(task.taskDescription);
+                    [ taskDate.taskType ]);
+                $("#taskId").val(taskDate.taskId);
+                $("#taskDescription_view").val(taskDate.taskDescription);
 
             }
         });
@@ -540,25 +585,28 @@
         });
     });
 
-
     $("#task_claim_save_btn")
         .click(function(){
             $.ajax({
                 url: "/task/claim",
                 type: "GET",
-                data: "taskId=" + $(this).attr("edit-id"),
+                data: "taskId=" + $("#taskId").val()+"&userId="+$("#userId").val(),
                 success: function (result) {
                     if (result.code == 100) {
                         alert(result.msg);
                         //员工保存成功；
                         //1、关闭模态框
                         $("#taskClaimModal").modal('hide');
-
-
+                    }
+                    else if(result.code==200){
+                        alert("您已领取该任务！");
                     }
                 }
             });
         });
+
+
+
 </script>
 
 </body>

@@ -22,6 +22,22 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+
+    @ResponseBody
+    @RequestMapping("/checkUser")
+    public Msg checkUser(String userName) {
+        String regName="(^[a-zA-Z0-9_-]{6,16}$)|(^[\\u2E80-\\u9FFF]{2,5})";
+        if(!userName.matches(regName)) {
+            return Msg.fail().add("val_msg", "用户名必须是2-5位中文或者6-16位英文和数字的组合(后端：控制器)");
+        }
+        int checkName = userService.checkName(userName);
+        if(checkName==0) {
+            return Msg.success().add("info","用户名可用");
+        }else{
+            return Msg.fail().add("info","用户名已存在");
+        }
+    }
+
     @ResponseBody
     @PostMapping("/add")
     public int addUser(User user){
@@ -73,6 +89,11 @@ public class UserController {
     @RequestMapping(value={"toLogin","logout"})
     public String toLogin(){
         return "login";
+    }
+
+    @RequestMapping(value="reg")
+    public String toReg(){
+        return "register";
     }
 
 }

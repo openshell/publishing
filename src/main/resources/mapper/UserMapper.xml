@@ -40,6 +40,16 @@
 
   </select>
 
+  <select id="countUserByName" parameterType="java.lang.String">
+        SELECT
+    count(*)
+    FROM
+    t_user
+    WHERE
+      user_name=#{userName}
+
+  </select>
+
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from t_user

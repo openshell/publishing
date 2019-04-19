@@ -36,4 +36,13 @@ public interface UserService {
      * @return com.cqz.model.User
      */
     User getUserByName(String userName);
+
+    /**
+     * 检查用户名是否存在
+     * @author openshell
+     * @date 2019/4/19
+     * @param [userName]
+     * @return java.lang.Boolean
+     */
+    int checkName(String userName);
 }

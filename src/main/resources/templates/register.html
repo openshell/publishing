@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8" />
-    <title>任务分发系统登录</title>
+    <title>任务分发系统注册</title>
    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <link rel="stylesheet" href="/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="/css/app.css">
@@ -13,23 +13,26 @@
         <a class="navbar-brand block"><span class="h1 font-bold" style="color: #ffffff">任务分发系统</span></a>
         <section class="m-b-lg">
             <header class="wrapper text-center">
-                <strong class="text-sucess">用户登录</strong>
+                <strong class="text-sucess">用户注册</strong>
             </header>
             <form action="/user/login" method="get" id="loginMsg">
                 <div class="form-group">
                     <input type="text" name="userName" placeholder="用户名" class="form-control  input-lg text-center no-border">
                 </div>
                 <div class="form-group">
+                    <input type="password" name="userPassword" placeholder="真实姓名" class="form-control  input-lg text-center no-border">
+                </div>
+                <div class="form-group">
                     <input type="password" name="userPassword" placeholder="密码" class="form-control  input-lg text-center no-border">
                 </div>
-
+                <div class="form-group">
+                    <input type="password" name="userPassword" placeholder="确认密码" class="form-control  input-lg text-center no-border">
+                </div>
                 <button type="submit" class="btn btn-lg btn-danger lt b-white b-2x btn-block" id="validate-submit">
-                    <span class="m-r-n-lg" >登录</span></button>
+                    <span class="m-r-n-lg" >注册</span></button>
             </form>
-
-                <button value="按钮" class="btn btn-lg btn-danger lt b-white b-2x btn-block" onclick="javascript:window.location.href='/user/reg'">
-                <span class="m-r-n-lg" >注册</span></button>
-
+            <button value="按钮" class="btn btn-lg btn-danger lt b-white b-2x btn-block" onclick="javascript:window.location.href='/user/toLogin'">
+                <span class="m-r-n-lg" >返回登录</span></button>
         </section>
     </div>
 </section>

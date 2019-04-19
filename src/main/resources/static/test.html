@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+	<!-- 基础环境引用说明 -->
+<!-- jQuery 基础脚本引用 -->
+
+ 
+ 
+<!-- 插件使用的样式表文件 -->
+<link rel="stylesheet" href="./css/selectpage.css" type="text/css">
+ 
+<!-- 插件核心脚本 -->
+
+</head>
+<body>
+
+<input type="text" id="selectPage" >
+<script src="https://upcdn.b0.upaiyun.com/libs/jquery/jquery-2.0.2.min.js"></script>
+
+
+
+<script src="./js/selectpage.js" ></script>
+
+
+	
+	
+	<script type="text/javascript">
+	//定义数组，在服务端返回的数据也以该格式返回：Array[{Object},{...}]
+var tag_data = [
+    {id:1 ,name:'Chicago Bulls',desc:'芝加哥公牛'},
+    {id:2 ,name:'Cleveland Cavaliers',desc:'克里夫兰骑士'},
+    {id:3 ,name:'Detroit Pistons',desc:'底特律活塞'},
+    {id:4 ,name:'Indiana Pacers',desc:'印第安纳步行者'}
+];
+//初始化插件
+$('#selectPage').selectPage({
+    showField : 'desc',
+    keyField : 'id',
+    data : tag_data
+});
+	</script>
+</body>
+</html>
