@@ -4,13 +4,19 @@
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.pollix.at/thymeleaf/shiro ">
 <head>
     <title>任务发布系统</title>
-
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="/css/main.css">
     <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
     <link rel="stylesheet" href="/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css"/>
+    <!-- 引入时间插件-->
+    <link rel="stylesheet" type="text/css"
+          href="/css/bootstrap-datetimepicker.css"
+          media="all"/>
+
+    <!-- 插件使用的样式表文件 -->
+    <link rel="stylesheet" href="/css/selectpage.css" type="text/css">
 </head>
 <body class="app sidebar-mini rtl">
 
@@ -30,17 +36,7 @@
 
     </a>
     <ul class="app-nav">
-
-        <li class="dropdown"><a class="app-nav__item" href="#"
-                                data-toggle="dropdown" aria-label="Open Profile Menu"><i
-                class="fa fa-user fa-lg"></i></a>
-            <ul class="dropdown-menu settings-menu dropdown-menu-right">
-
-                <li><a class="dropdown-item" href="/logout"><i
-                        class="fa fa-sign-out fa-lg"></i> 退出</a>
-                </li>
-            </ul>
-        </li>
+        <a class="app-nav__item" href="/user/logout" >退出</a>
     </ul>
 </header>
 
@@ -111,8 +107,15 @@
 
 
 <script src="/webjars/jquery/3.1.1/jquery.min.js"></script>
+<script src="/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
 <script src="/js/popper.min.js"></script>
 <script src="/js/main.js"></script>
+<script src="/js/bootstrap-datetimepicker.min.js"></script>
+<script src="/js/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="/js/bulid.js"></script>
+
+<!-- 下拉分页插件核心脚本 -->
+<script src="/js/selectpage.js"></script>
 <script type="text/javascript">
 
 
@@ -124,7 +127,7 @@
     function to_page(pn) {
         $.ajax({
             url: "/user/all",
-            data: "pn=" + pn,
+            data: "pageNum=" + pn,
             type: "GET",
             success: function (result) {
                 console.log(result);
@@ -144,6 +147,7 @@
             var userName = $("<td></td>").append(item.userName);
             var realName = $("<td></td>").append(item.userRealname);
             var registerTime = $("<td></td>").append(item.formatUserRegisterTime);
+            console.log(item.userStatus = 'enable' ? "启用" : "禁用");
             var status = $("<td></td>").append(item.userStatus = 'enable' ? "启用" : "禁用");
             $("<tr></tr>").append(userId).append(userName).append(realName).append(registerTime).append(status).appendTo("#users_table tbody");
         });

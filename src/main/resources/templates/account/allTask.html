@@ -26,17 +26,7 @@
     <a class="app-sidebar__toggle" href="#" data-toggle="sidebar"
        aria-label="Hide Sidebar"></a>
     <ul class="app-nav">
-
-        <li class="dropdown"><a class="app-nav__item" href="#"
-                                data-toggle="dropdown" aria-label="Open Profile Menu"><i
-                class="fa fa-user fa-lg"></i></a>
-            <ul class="dropdown-menu settings-menu dropdown-menu-right">
-
-                <li><a class="dropdown-item" href="/logout"><i
-                        class="fa fa-sign-out fa-lg"></i> 退出</a>
-                </li>
-            </ul>
-        </li>
+        <a class="app-nav__item" href="/user/logout" >退出</a>
     </ul>
 </header>
 
@@ -75,14 +65,14 @@
 </aside>
 <!-- 搭建显示页面 -->
 <main class="app-content">
-
     <div class="title">
         <!--任务新建模态框-->
         <div class="modal fade" id="taskAddModal" tabindex="-1" role="dialog"
              aria-labelledby="myModalLabel">
-            <input type="text"  class="form-control input-sm" id="selectPage" >
+
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
+
                     <div class="modal-header">
                         <h4 class="modal-title" id="myModalLabel">新建任务</h4>
                         <button type="button" class="close" data-dismiss="modal"
@@ -93,35 +83,35 @@
                     </div>
                     <div class="modal-body">
                         <form class="form-horizontal">
+
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">名称</label>
-                                <div class="col-sm-10">
+                                <label class="col-sm-3 control-label">名称</label>
+                                <div class="col-sm-9">
                                     <input type="text" name="taskName" class="form-control"
                                            id="taskName_add_input" placeholder="任务名称"> <span
                                         class="help-block"></span>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">任务类型</label>
-                                <div class="col-sm-10">
-                                    <label class="radio-inline"> <input type="radio"
-                                                                        name="taskType" id="gender1_add_input" value="claim"
-                                                                        checked="checked"> 认领制
-                                    </label> <label class="radio-inline"> <input type="radio"
-                                                                                 name="taskType" id="gender2_add_input" value="coordination"> 协同制
+                                <label class="col-sm-3 control-label">任务类型</label>
+                                <div class="col-sm-9">
+                                    <label class="radio-inline">
+                                        <input type="radio"   name="taskType"    value="claim"  checked="checked"> 认领制
+                                    </label> <label class="radio-inline">
+                                    <input type="radio" name="taskType" value="coordination"> 协同制
                                 </label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">人员选择</label>
-
-
                                     <span class="help-block"></span>
-
+                                <div class="col-sm-9">
+                                <input type="text" name="taskSelectPeople"   class="form-control input-sm" id="selectPage" >
+                                </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">说明</label>
-                                <div class="col-sm-10">
+                                <label class="col-sm-3 control-label">说明</label>
+                                <div class="col-sm-9">
                                     <textarea class="form-control" name="taskDescription" rows="5"id="taskDescription_add_input"  placeholder="任务描述"></textarea>
                                      <span
                                         class="help-block"></span>
@@ -132,19 +122,84 @@
                         </form>
                     </div>
                     <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="task_save_btn">新建</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
 
                     </div>
                 </div>
             </div>
         </div>
+
         <!--认领任务模态框-->
         <div class="modal fade" id="taskClaimModal" tabindex="-1" role="dialog"
              aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title" id="myModalLabel2">认领任务</h4>
+                        <h4 class="modal-title" id="myModalLabel1">认领任务</h4>
+                        <button type="button" class="close" data-dismiss="modal"
+                                aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">名称</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="taskName" class="form-control"
+                                           id="taskName_claim" placeholder="任务名称"> <span
+                                        class="help-block"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">任务类型</label>
+                                <div class="col-sm-10">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="taskType" value="claim"   checked="checked"> 认领制
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio"  name="taskType" value="coordination"> 协同制
+                                    </label>
+                                </div>
+
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">负责人</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="taskCharge" class="form-control"
+                                           id="taskSelectPeople_claim" readonly="readonly"> <span
+                                        class="help-block"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">说明</label>
+                                <div class="col-sm-10">
+                                    <textarea class="form-control" name="taskDescription" rows="5"id="taskDescription_claim"  placeholder="任务描述"></textarea>
+                                    <span
+                                            class="help-block"></span>
+                                </div>
+                                <input type="hidden" name="taskCharge" th:value="${session.loginUser.userName}" >
+                                <input type="hidden" name="userId"  id="userId" th:value="${session.loginUser.userId}" >
+                                <input type="hidden" name="taskId_claim"  id="taskId_claim"  >
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" id="task_claim_save_btn">认领</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 信息查看模态框-->
+        <div class="modal fade" id="taskInfoModal" tabindex="-1" role="dialog"
+             aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel2">任务查看</h4>
                         <button type="button" class="close" data-dismiss="modal"
                                 aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -164,19 +219,19 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">任务类型</label>
                                 <div class="col-sm-10">
-                                    <label class="radio-inline"> <input type="radio"
-                                                                        name="taskType" id="taskType1_view" value="claim"
-                                                                        checked="checked"> 认领制
-                                    </label> <label class="radio-inline"> <input type="radio"
-                                                                                 name="taskType" id="taskType2_view" value="coordinate"> 协同制
-                                </label>
+                                    <label class="radio-inline">
+                                        <input type="radio"  name="taskType"  value="claim"  > 认领制
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="taskType"  value="coordination" checked="checked"> 协同制
+                                    </label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">负责人</label>
                                 <div class="col-sm-10">
                                     <input type="text" name="taskCharge" class="form-control"
-                                           id="taskSelectPeople_view" readonly="readonly"> <span
+                                           id="taskCharge_view" readonly="readonly"> <span
                                         class="help-block"></span>
                                 </div>
                             </div>
@@ -188,19 +243,20 @@
                                             class="help-block"></span>
                                 </div>
                                 <input type="hidden" name="taskCharge" th:value="${session.loginUser.userName}" >
-                                <input type="hidden" name="userId"  id="userId" th:value="${session.loginUser.userId}" >
-                                <input type="hidden" name="taskId"  id="taskId"  >
+                                <input type="hidden" name="userId"  id="intfo_userId" th:value="${session.loginUser.userId}" >
+
                             </div>
 
                         </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                        <button type="button" class="btn btn-primary" id="task_claim_save_btn">认领</button>
+
                     </div>
                 </div>
             </div>
         </div>
+
 
 
         <!--人员选择模态框-->
@@ -252,7 +308,7 @@
                     <div class="form-group">
                         <input type="text" class="form-control form-custom" id="searchKey" placeholder="任务名称检索">
                     </div>
-                    <button class="btn btn-primary" id="regSearch">搜索</button>
+                    <button class="btn btn-primary" id="searchByName">搜索</button>
                 </div>
             </div>
             <div class="col-md-1">
@@ -296,43 +352,32 @@
 </main>
 
 
-<script src="https://upcdn.b0.upaiyun.com/libs/jquery/jquery-2.0.2.min.js"></script>
+<script src="/webjars/jquery/3.1.1/jquery.min.js"></script>
 <script src="/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
 <script src="/js/popper.min.js"></script>
 <script src="/js/main.js"></script>
 <script src="/js/bootstrap-datetimepicker.min.js"></script>
 <script src="/js/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="/js/bulid.js"></script>
 
 <!-- 下拉分页插件核心脚本 -->
 <script src="/js/selectpage.js"></script>
 
 
 <script type="text/javascript">
-
-
-    //定义数组，在服务端返回的数据也以该格式返回：Array[{Object},{...}]
-    var tag_data = [
-        {id:1 ,name:'Chicago Bulls',desc:'芝加哥公牛'},
-        {id:2 ,name:'Cleveland Cavaliers',desc:'克里夫兰骑士'},
-        {id:3 ,name:'Detroit Pistons',desc:'底特律活塞'},
-        {id:4 ,name:'Indiana Pacers',desc:'印第安纳步行者'}
-    ];
-    //初始化插件
-    $('#selectPage').selectPage({
-        showField : 'desc',
-        keyField : 'id',
-        data : tag_data
-    });
     var totalRecord;
     var userId=$("#userId").val();
+    var pageSer=1;
+    var virtulNum = new Array();
     $(function () {
         to_page(1);
+        getUsers(1);
     });
 
     function to_page(pn) {
         $.ajax({
             url: "/task/all",
-            data: "pn=" + pn,
+            data: "pageNum=" + pn,
             type: "GET",
             success: function (result) {
                 console.log(result);
@@ -342,15 +387,27 @@
             }
         });
     }
-
+    function getVirtulNum(result) {
+        var b = 1;
+        for (var k = 0; k < result.extend.pageInfo.pages; k++) {
+            virtulNum[k] = new Array();
+            for (var j = 0; j < 5; j++) {
+                virtulNum[k][j] = b;
+                b++;
+            }
+        }
+    }
     function bulid_page_table(result) {
-        $("#users_table tbody").empty();
+        $("#task_table tbody").empty();
+        getVirtulNum(result);
         var users = result.extend.pageInfo.list;
+        var numInfo=result.extend.pageInfo;
         var status=null;
+        var i=null;
+        console.log(virtulNum);
         $.each(users, function (index, item) {
-            var taskId = $("<td></td>").append(item.taskId);
+            var taskId = $("<td></td>").append(virtulNum[numInfo.pageNum-1][i++]);
             var taskName = $("<td></td>").append(item.taskName);
-
             var taskType = $("<td></td>").append(item.taskType == 'claim' ? "认领制" : "协同制");
 
             var taskCharge = $("<td></td>").append(item.taskCharge);
@@ -372,31 +429,29 @@
                 status="进行中";
                 editBtn = $("<button></button>")
                     .addClass(
-                        "btn btn-primary btn-sm edit_btn")
+                        "btn btn-primary btn-sm btn-info")
                     .append(
                         $("<span></span>")
                             .addClass(
                                 "glyphicon glyphicon-pencil"))
                     .append("查看");
                 //给编辑按钮添加属性，绑定任务id
-                editBtn.attr("del-id", item.taskId);
+                editBtn.attr("edit-id", item.taskId);
             }else if(item.taskStatus==3){
                 status ="办结";
                 editBtn = $("<button></button>")
                     .addClass(
-                        "btn btn-primary btn-sm edit_btn")
+                        "btn btn-primary btn-sm btn-success")
                     .append(
                         $("<span></span>")
                             .addClass(
                                 "glyphicon glyphicon-pencil"))
                     .append("查看");
                 //给编辑按钮添加属性，绑定任务id
-                editBtn.attr("del-id", item.taskId);
+                editBtn.attr("edit-id", item.taskId);
             }
             var taskStatus = $("<td></td>").append(status);
             var btnTd = $("<td></td>").append(editBtn);
-
-
             $("<tr></tr>").append(taskId).append(taskName).append(taskType).append(taskCharge)
                 .append(formatTaskStartTime).append(taskStatus).append(btnTd).appendTo("#task_table tbody");
         });
@@ -417,7 +472,6 @@
         //page_nav_area
         $("#page_nav_area").empty();
         var ul = $("<ul></ul>").addClass("pagination");
-
         //构建元素
         var firstPageLi = $("<li></li>").append(
             $("<a></a>").append("首页").attr("href", "#"));
@@ -435,7 +489,6 @@
                 to_page(result.extend.pageInfo.pageNum - 1);
             });
         }
-
         var nextPageLi = $("<li></li>").append(
             $("<a></a>").append("&raquo;"));
         var lastPageLi = $("<li></li>").append(
@@ -445,6 +498,7 @@
             lastPageLi.addClass("disabled");
         } else {
             nextPageLi.click(function () {
+
                 to_page(result.extend.pageInfo.pageNum + 1);
             });
             lastPageLi.click(function () {
@@ -476,11 +530,110 @@
 
     }
 
+    //认领模态框
+    $(document).on("click", ".edit_btn", function() {
+        getTask($(this).attr("edit-id"))
+       // $("#task_edit_btn").attr("edit_id",$(this).attr("edit-id"));
+        $("#taskClaimModal").modal({
+            backdrop : "static"
+        });
+    });
+    //查看信息模态框
+    $(document).on("click", ".btn-info", function() {
+        getTask($(this).attr("edit-id"))
+
+        $("#taskInfoModal").modal({
+            backdrop : "static"
+        });
+    });
+
+
+
+
+
+    var tag_data;
+    function initSelecPage(){
+        //初始化插件
+        $('#selectPage').selectPage(
+            {
+                showField : 'userName',
+                keyField : 'userId',
+                data :tag_data,
+                multiple : true
+            });
+    }
+
+    //发送认领定位
+    $("#task_claim_save_btn")
+        .click(function(){
+            $.ajax({
+                url: "/task/claim",
+                type: "GET",
+                data: "taskId=" + $("#taskId_claim").val()+"&userId="+$("#userId").val()+"&taskType="+$("#taskClaimModal input[name=taskType]").val(),
+                success: function (result) {
+                    if (result.code == 100) {
+                        alert(result.msg);
+                        //员工保存成功；
+                        //1、关闭模态框
+                        $("#taskClaimModal").modal('hide');
+                    }
+                    else if(result.code==200){
+                        console.log(result)
+                        alert(result.extend.errorInfo);
+                    }
+                }
+            });
+        });
+    //按时间搜索
+    $("#searchByName").click(function(){
+        var  pn=1;
+        $.ajax({
+            url:"/task/searchByName?searchKey="+$("#searchKey").val()+"&pageNum=" + pn,
+            type:"GET",
+            success:function(result){
+                $("#page_info_area").empty();
+                $("#page_nav_area").empty();
+                $("#task_table tbody").empty();
+                bulid_page_table(result);
+                bulid_page_info(result);
+                bulid_page_nav(result)
+            }
+        });
+    });
+    //清空表单样式及内容
+    function reset_form(ele) {
+        $(ele)[0].reset();
+        //清空表单样式
+        $(ele).find("*").removeClass("has-error has-success");
+        $(ele).find(".help-block").text("");
+    }
+    //根据taskId 获取任务
+    function getTask(taskId) {
+        $.ajax({
+            url : "/task/getById?taskId=" + taskId,
+            type : "GET",
+            success : function(result) {
+                console.log(result);
+                var taskDate = result.extend.task;
+                $("#taskName_claim").val(taskDate.taskName);
+                $("#taskClaimModal input[name=taskType]").val([taskDate.taskType]);
+                $("#taskId_claim").val(taskDate.taskId);
+                $("#taskDescription_claim").val(taskDate.taskDescription);
+
+                $("#taskName_view").val(taskDate.taskName);
+                $("#taskInfoModal input[name=taskType]").val([taskDate.taskType]);
+                $("#taskCharge_view").val(taskDate.taskCharge);
+                $("#taskId_view").val(taskDate.taskId);
+                $("#taskDescription_view").val(taskDate.taskDescription);
+
+            }
+        });
+    }
     //发送新建任务信息
     $("#task_save_btn")
         .click(
             function() {
-
+                //var userIds=$("#selectPage").val();
                 $.ajax({
                     url : "/task/save",
                     type : "POST",
@@ -497,26 +650,48 @@
                             //发送ajax请求显示最后一页数据即可
                             to_page(totalRecord);
                         }
-
                     }
-
                 });
             });
 
+    function getUsers(pn){
+        $.ajax({
+            url:"/user/all",
+            date:"pageNum"+pn,
+            type:"GET",
+            async: false,
+            success:function (result) {
+                tag_data=result.extend.pageInfo.list;
+                console.log(tag_data);
+                initSelecPage();
+            }
+        });
+    }
+
+
+
+    //新建任务模态框
+    $("#task_add_modal_btn").click(function() {
+        reset_form("#taskAddModal form");
+        $("#taskAddModal").modal({
+            backdrop : "static"
+        });
+    });
 
     //日期事件
-    $('#yyyy_mm_dd').datetimepicker({
-        bootcssVer: 3,
-        format: "yyyy-mm-dd",
-        //endDate: 2017,
-        autoclose: true,
-        startView: 4,
-        minView: 2,
-        maxView: 4,
-        language: 'zh-CN',
-        todayBtn: 1,
-        todayHighlight: 1
-    });
+    $('#yyyy_mm_dd').datetimepicker(
+        {
+            bootcssVer: 3,
+            format: "yyyy-mm-dd",
+            //endDate: 2017,
+            autoclose: true,
+            startView: 4,
+            minView: 2,
+            maxView: 4,
+            language: 'zh-CN',
+            todayBtn: 1,
+            todayHighlight: 1
+        });
 
     $('#yyyy_mm_dd2').datetimepicker({
         bootcssVer: 3,
@@ -530,81 +705,6 @@
         todayBtn: 1,
         todayHighlight: 1
     });
-
-    //模态框事件
-    $("#task_add_modal_btn").click(function() {
-        reset_form("#taskAddModal form");
-        $("#taskAddModal").modal({
-            backdrop : "static"
-        });
-    });
-
-    $(document).on("click", ".edit_btn", function() {
-        getTask($(this).attr("edit-id"))
-        $("#emp_edit_btn").attr("edit_id",$(this).attr("edit-id"));
-        $("#taskClaimModal").modal({
-            backdrop : "static"
-        });
-    });
-
-
-
-    function getTask(taskId) {
-        $.ajax({
-            url : "/task/getById?taskId=" + taskId,
-            type : "GET",
-            success : function(result) {
-                console.log(result);
-                var taskDate = result.extend.task;
-                $("#taskName_view").val(taskDate.taskName);
-                $("#taskClaimModal input[name=taskType]").val(
-                    [ taskDate.taskType ]);
-                $("#taskId").val(taskDate.taskId);
-                $("#taskDescription_view").val(taskDate.taskDescription);
-
-            }
-        });
-    }
-    //清空表单样式及内容
-    function reset_form(ele) {
-        $(ele)[0].reset();
-        //清空表单样式
-        $(ele).find("*").removeClass("has-error has-success");
-        $(ele).find(".help-block").text("");
-    }
-    $("#regSearch").click(function(){
-        var  pn=1;
-        $.ajax({
-            url:"/task/searchByName?searchKey="+$("#searchKey").val()+"pn=" + pn,
-            type:"GET",
-            success:function(result){
-                bulid_page_table(result);
-                bulid_page_info(result);
-                bulid_page_nav(result)
-            }
-        });
-    });
-
-    $("#task_claim_save_btn")
-        .click(function(){
-            $.ajax({
-                url: "/task/claim",
-                type: "GET",
-                data: "taskId=" + $("#taskId").val()+"&userId="+$("#userId").val(),
-                success: function (result) {
-                    if (result.code == 100) {
-                        alert(result.msg);
-                        //员工保存成功；
-                        //1、关闭模态框
-                        $("#taskClaimModal").modal('hide');
-                    }
-                    else if(result.code==200){
-                        alert("您已领取该任务！");
-                    }
-                }
-            });
-        });
-
 
 
 </script>

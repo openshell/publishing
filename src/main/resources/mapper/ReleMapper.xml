@@ -5,33 +5,31 @@
     <id column="rele_id" property="releId" jdbcType="INTEGER" />
     <result column="rele_user_id" property="releUserId" jdbcType="INTEGER" />
     <result column="rele_task_id" property="releTaskId" jdbcType="INTEGER" />
+    <result column="rele_type" property="releType" jdbcType="CHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    rele_id, rele_user_id, rele_task_id
+    rele_id, rele_user_id, rele_task_id, rele_type
   </sql>
+
+
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from t_rele
     where rele_id = #{releId,jdbcType=INTEGER}
   </select>
-
-  <select id="checkRele" resultType="java.lang.Integer">
-    select count(*) from t_rele r where rele_user_id=#{userId} and rele_task_id=#{taskId}
-  </select>
-
-
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from t_rele
     where rele_id = #{releId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.cqz.model.Rele" >
-    insert into t_rele (rele_id, rele_user_id, rele_task_id
-      )
-    values (#{releId,jdbcType=INTEGER}, #{releUserId,jdbcType=INTEGER}, #{releTaskId,jdbcType=INTEGER}
-      )
+    insert into t_rele (rele_id, rele_user_id, rele_task_id, 
+      rele_type)
+    values (#{releId,jdbcType=INTEGER}, #{releUserId,jdbcType=INTEGER}, #{releTaskId,jdbcType=INTEGER}, 
+      #{releType,jdbcType=CHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.cqz.model.Rele" >
+  <insert id="insertSelective" parameterType="com.cqz.model.Rele"  >
     insert into t_rele
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="releId != null" >
@@ -42,6 +40,9 @@
       </if>
       <if test="releTaskId != null" >
         rele_task_id,
+      </if>
+      <if test="releType != null" >
+        rele_type,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -54,6 +55,9 @@
       <if test="releTaskId != null" >
         #{releTaskId,jdbcType=INTEGER},
       </if>
+      <if test="releType != null" >
+        #{releType,jdbcType=CHAR},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.cqz.model.Rele" >
@@ -65,13 +69,58 @@
       <if test="releTaskId != null" >
         rele_task_id = #{releTaskId,jdbcType=INTEGER},
       </if>
+      <if test="releType != null" >
+        rele_type = #{releType,jdbcType=CHAR},
+      </if>
     </set>
     where rele_id = #{releId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.cqz.model.Rele" >
     update t_rele
     set rele_user_id = #{releUserId,jdbcType=INTEGER},
-      rele_task_id = #{releTaskId,jdbcType=INTEGER}
+      rele_task_id = #{releTaskId,jdbcType=INTEGER},
+      rele_type = #{releType,jdbcType=CHAR}
     where rele_id = #{releId,jdbcType=INTEGER}
   </update>
+
+
+  <select id="selectIsBeSelect" resultType="java.lang.Integer">
+
+SELECT
+COUNT(*)
+FROM t_rele r
+WHERE r.rele_task_id=#{taskId}
+AND r.rele_user_id=#{userId}
+
+
+  </select>
+  <select id="selectIsBeClaim" resultType="java.lang.Integer">
+SELECT
+COUNT(*)
+FROM t_rele r
+WHERE r.rele_task_id=#{taskId}
+AND r.rele_user_id=#{userId}
+AND r.rele_type=#{releTypeBeClaim}
+
+  </select>
+  <select id="selectIsBeSelectBySelf" resultType="java.lang.Integer">
+SELECT COUNT(*)
+FROM t_rele r
+WHERE r.rele_user_id=#{userId}
+AND r.rele_task_id=#{taskId}
+AND r.rele_type=#{releTypeSelfSelect}
+
+  </select>
+  <update id="updateReleType" >
+UPDATE t_rele r
+SET r.rele_type=#{releTypeBeClaim}
+WHERE r.rele_user_id=#{userId}
+AND r.rele_task_id=#{taskId};
+
+  </update>
+
+
+
+
+
 </mapper>

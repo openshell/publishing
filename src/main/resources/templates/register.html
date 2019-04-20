@@ -6,6 +6,7 @@
    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <link rel="stylesheet" href="/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="/css/app.css">
+    <link rel="stylesheet" href="http://jqueryvalidation.org/files/demo/site-demos.css">
 </head>
 <body>
 <section id="content" class="m-t-lg wrapper-md animated fadeInUp ">
@@ -15,18 +16,23 @@
             <header class="wrapper text-center">
                 <strong class="text-sucess">用户注册</strong>
             </header>
-            <form action="/user/login" method="get" id="loginMsg">
+            <form action="/user/add" method="post" id="regForm">
                 <div class="form-group">
-                    <input type="text" name="userName" placeholder="用户名" class="form-control  input-lg text-center no-border">
+                    <label for="userName">用户名：</label>
+                    <input type="text" name="userName" id="userName" placeholder="用户名" class="form-control  input-lg text-center no-border">
                 </div>
                 <div class="form-group">
-                    <input type="password" name="userPassword" placeholder="真实姓名" class="form-control  input-lg text-center no-border">
+                    <label for="userPassword">真实姓名</label>
+                    <input type="text" name="userRealname" placeholder="真实姓名" class="form-control  input-lg text-center no-border">
                 </div>
                 <div class="form-group">
-                    <input type="password" name="userPassword" placeholder="密码" class="form-control  input-lg text-center no-border">
+                    <label for="userPassword">密码</label>
+                    <input type="password" name="userPassword" id="userPassword" placeholder="密码" class="form-control  input-lg text-center no-border">
                 </div>
                 <div class="form-group">
-                    <input type="password" name="userPassword" placeholder="确认密码" class="form-control  input-lg text-center no-border">
+                    <label for="userPassword">确认密码</label>
+                    <input type="password" name="userPassword_again" id="userPassword_again" placeholder="确认密码" class="form-control  input-lg text-center no-border">
+                    <span id="tishi"></span>
                 </div>
                 <button type="submit" class="btn btn-lg btn-danger lt b-white b-2x btn-block" id="validate-submit">
                     <span class="m-r-n-lg" >注册</span></button>
@@ -47,7 +53,85 @@
 <p>版权所有：<a href="http://www.mycodes.net/" target="_blank">西辰软件</a></p>
 </div>
 <script src="/webjars/jquery/3.1.1/jquery.min.js"></script>
+<script src="http://jqueryvalidation.org/files/dist/jquery.validate.min.js"></script>
+<script src="http://jqueryvalidation.org/files/dist/additional-methods.min.js"></script>
 <script type="text/javascript">
+
+    jQuery.validator.setDefaults({
+
+        success: "valid"
+    });
+    $( "#regForm" ).validate({
+        rules: {
+            userName:{
+                required:true
+            },
+            userRealname:{
+                required:true
+            }
+            ,
+            userPassword: {
+                required:true,
+                rangelength:[3,10],
+            },
+            userPassword_again: {
+                rangelength:[3,10],
+                equalTo: "#userPassword"
+            }
+        }
+    });
+    $.extend($.validator.messages, {
+        required: "必选字段",
+        remote: "请修正该字段",
+        email: "请输入正确格式的电子邮件",
+        url: "请输入合法的网址",
+        date: "请输入合法的日期",
+        dateISO: "请输入合法的日期 (ISO).",
+        number: "请输入合法的数字",
+        digits: "只能输入整数",
+        creditcard: "请输入合法的信用卡号",
+        equalTo: "请再次输入相同的值",
+        accept: "请输入拥有合法后缀名的字符串",
+        maxlength: $.validator.format("请输入一个长度最多是 {0} 的字符串"),
+        minlength: $.validator.format("请输入一个长度最少是 {0} 的字符串"),
+        rangelength: $.validator.format("请输入一个长度介于 {0} 和 {1} 之间的字符串"),
+        range: $.validator.format("请输入一个介于 {0} 和 {1} 之间的值"),
+        max: $.validator.format("请输入一个最大为 {0} 的值"),
+        min: $.validator.format("请输入一个最小为 {0} 的值")
+    });
+    // $("#pwd2").change(function () {
+    //         var pwd1 = $("#pwd1").val();
+    //         var pwd2 = $("#pwd2").val();
+    //         <!-- 对比两次输入的密码 -->
+    //         if(pwd1 == pwd2)
+    //         {
+    //             $("#tishi").html("两次密码相同");
+    //             $("#tishi").css("color","green");
+    //             $("button").remove("disabled")
+    //             $("#validate-submit").removeAttr("disabled");
+    //            // $("#xiugai").removeAttr("disabled");
+    //         }
+    //         else {
+    //             $("#tishi").html("两次密码不相同");
+    //             $("#tishi").css("color","red")
+    //             $("#validate-submit").attr("disabled","disabled");
+    //
+    //         }
+    //
+    //     });
+    // $("#validate-submit").click(function(){
+    // if($("#pwd1").val()==null){
+    //     alter("密码不能为空！");
+    //     $("#validate-submit").attr("disabled","disabled");
+    // }else{
+    //     $("#validate-submit").removeAttr("disabled");
+    // }
+    //
+    //
+    //
+    // });
+
+
 /* $("#validate-submit").click(function(){
 	//alert($("#loginMsg").serialize());
 	$.ajax({

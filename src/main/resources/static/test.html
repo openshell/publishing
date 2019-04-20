@@ -17,6 +17,7 @@
 <body>
 
 <input type="text" id="selectPage" >
+<button type="button" class="btn btn-default" id="func1"><i class="fa fa-file-text-o"></i> 获得选中项目的文本内容</button>
 <script src="https://upcdn.b0.upaiyun.com/libs/jquery/jquery-2.0.2.min.js"></script>
 
 
@@ -24,21 +25,50 @@
 <script src="./js/selectpage.js" ></script>
 
 
-	
+
+
+
 	
 	<script type="text/javascript">
-	//定义数组，在服务端返回的数据也以该格式返回：Array[{Object},{...}]
+	
+
+
+	
 var tag_data = [
     {id:1 ,name:'Chicago Bulls',desc:'芝加哥公牛'},
     {id:2 ,name:'Cleveland Cavaliers',desc:'克里夫兰骑士'},
     {id:3 ,name:'Detroit Pistons',desc:'底特律活塞'},
     {id:4 ,name:'Indiana Pacers',desc:'印第安纳步行者'}
 ];
-//初始化插件
+//showField：设置下拉列表中显示文本的列
+//keyField：设置下拉列表项目中项目的KEY值，用于提交表单
+//data：数据源，可以是JSON数据格式，也可以是URL
 $('#selectPage').selectPage({
     showField : 'desc',
     keyField : 'id',
-    data : tag_data
+    data : tag_data,
+	multiple : true
+});
+//获得选中项目的文本内容
+$('#func1').click(function(){
+console.log($('#selectPage').val());
+  
+});
+//清除所有选中的项目
+$('#func2').click(function(){
+    $('#selectPage').selectPageClear();
+});
+//动态修改选中项目
+$('#func3').click(function(){
+    $('#selectPage').val('20');
+    $('#selectPage').selectPageRefresh();
+});
+//设置插件禁用 / 启用
+$('#funcDisabled').click(function(){
+    if($('#selectPage').selectPageDisabled())//判断当前状态
+        $('#selectPage').selectPageDisabled(false);
+    else
+        $('#selectPage').selectPageDisabled(true);
 });
 	</script>
 </body>

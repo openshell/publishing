@@ -9,6 +9,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,7 +24,10 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
     @Override
     public int addUser(User user) {
-        return 0;
+
+        user.setUserRegisterTime(new Date());
+        user.setUserLoginTime((new Date()));
+        return userMapper.insertSelective(user);
     }
 
     @Override
@@ -33,7 +37,9 @@ public class UserServiceImpl implements UserService {
         for (User user: users) {
             user.setFormatUserRegisterTime(FormatDate.getFormatDateWithTime(user.getUserRegisterTime()));
             user.setFormatUserLoginTime(FormatDate.getFormatDateWithTime(user.getUserLoginTime()));
+
         }
+
         PageInfo pageInfo=new PageInfo(users);
         return pageInfo;
     }

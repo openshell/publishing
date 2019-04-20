@@ -9,6 +9,13 @@
     <link rel="stylesheet" type="text/css" href="/css/main.css">
     <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
     <link rel="stylesheet" href="/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css"/>
+    <!-- 引入时间插件-->
+    <link rel="stylesheet" type="text/css"
+          href="/css/bootstrap-datetimepicker.css"
+          media="all"/>
+
+    <!-- 插件使用的样式表文件 -->
+    <link rel="stylesheet" href="/css/selectpage.css" type="text/css">
 </head>
 <body class="app sidebar-mini rtl">
 
@@ -16,14 +23,10 @@
     <a class="app-header__logo" href="${APP_PATH }/emp/adminHome"> <i
             class="fa fa-home"></i> 任务分发系统
     </a>
-    <a class="app-sidebar__toggle" href="#" data-toggle="sidebar"
+    <a class="app-sidebar__toggle" href="/user/logout" data-toggle="sidebar"
        aria-label="Hide Sidebar"></a>
     <ul class="app-nav">
-
-        <li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Open Profile Menu">退出</a>
-            <ul class="dropdown-menu settings-menu dropdown-menu-right">
-               <li><a class="dropdown-item" href="/logout"></a></li>
-            </ul></li>
+        <a class="app-nav__item" href="/user/logout" >退出</a>
     </ul>
 </header>
 
@@ -267,8 +270,15 @@
 
 
 <script src="/webjars/jquery/3.1.1/jquery.min.js"></script>
+<script src="/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
 <script src="/js/popper.min.js"></script>
 <script src="/js/main.js"></script>
+<script src="/js/bootstrap-datetimepicker.min.js"></script>
+<script src="/js/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="/js/bulid.js"></script>
+
+<!-- 下拉分页插件核心脚本 -->
+<script src="/js/selectpage.js"></script>
 <script type="text/javascript">
     var totalRecord;
     var userId=$("#userId").val();
@@ -277,10 +287,9 @@
     });
 
     function to_page(pn) {
-
         $.ajax({
             url: "/task/allBackLog?userId="+userId,
-            data: "pn=" + pn,
+            data: "pageNum=" + pn,
             type: "GET",
             success: function (result) {
                 console.log(result);
@@ -495,7 +504,7 @@
     $("#regSearch").click(function(){
         var  pn=1;
         $.ajax({
-            url:"/task/searchByName?searchKey="+$("#searchKey").val()+"pn=" + pn,
+            url:"/task/searchByName?searchKey="+$("#searchKey").val()+"pageNum=" + pn,
             type:"GET",
             success:function(result){
                 bulid_page_table(result);

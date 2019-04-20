@@ -1,6 +1,7 @@
 package com.cqz.dao;
 
 import com.cqz.model.Task;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -28,7 +29,7 @@ public interface TaskMapper {
     int insert(Task record);
 
     /**
-     * 只会插入数据不为null的字段值
+     * 只会插入数据不为null的字段值，并返回新增的主键的值
      * @author openshell
      * @date 2019/4/16
      * @param record
@@ -87,7 +88,7 @@ public interface TaskMapper {
      * @param [userId]
      * @return java.util.List<com.cqz.model.Task>
      */
-    List<Task> selectBackLog(int userId);
+    List<Task> selectBackLog(@Param("userId")int userId, @Param("releTypeBeClaim") String releTypeBeClaim);
 
 
 }

@@ -38,10 +38,14 @@ public class UserController {
         }
     }
 
-    @ResponseBody
+
     @PostMapping("/add")
-    public int addUser(User user){
-        return userService.addUser(user);
+    public String  addUser(User user){
+        if(userService.addUser(user)==1){
+          return   "redirect:/user/login?userName="+user.getUserName()+"&userPassword="+user.getUserPassword();
+        }else {
+            return "register";
+        }
     }
 
     @ResponseBody
@@ -49,7 +53,7 @@ public class UserController {
     public Msg findAllUser(
             @RequestParam(name = "pageNum", required = false, defaultValue = "1")
                     int pageNum,
-            @RequestParam(name = "pageSize", required = false, defaultValue = "10")
+            @RequestParam(name = "pageSize", required = false, defaultValue = "5")
                     int pageSize){
         return Msg.success().add("pageInfo",userService.findAllUser(pageNum,pageSize));
     }

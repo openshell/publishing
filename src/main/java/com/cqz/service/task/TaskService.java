@@ -1,5 +1,6 @@
 package com.cqz.service.task;
 
+import com.cqz.model.Msg;
 import com.cqz.model.Task;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,7 @@ public interface TaskService {
      * @param task
      * @return int
      */
-    int saveTask(Task task);
+    void saveTask(int[] userId,Task task);
 
     /**
      * 根据任务名查询
@@ -50,5 +51,14 @@ public interface TaskService {
 
     Task selectTaskById(int id);
 
-    int claimTask(int taskId,int userId);
+    Msg claimTask(int taskId, int userId, String taskType);
+
+    /**
+     * 保存任务关联
+     * @author openshell
+     * @date 2019/4/19
+     * @param [userId, taskId]
+     * @return int
+     */
+    void saveRele(int[] userId, Integer taskId);
 }

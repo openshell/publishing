@@ -7,6 +7,8 @@ public class Rele {
 
     private Integer releTaskId;
 
+    private String releType;
+
     public Integer getReleId() {
         return releId;
     }
@@ -29,5 +31,13 @@ public class Rele {
 
     public void setReleTaskId(Integer releTaskId) {
         this.releTaskId = releTaskId;
+    }
+
+    public String getReleType() {
+        return releType;
+    }
+
+    public void setReleType(String releType) {
+        this.releType = releType == null ? null : releType.trim();
     }
 }

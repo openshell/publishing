@@ -31,12 +31,12 @@
 
   </select>
 
-  <select id="selectTaskByName" resultMap="BaseResultMap">
+  <select id="selectTaskByName"  parameterType="java.lang.String" resultMap="BaseResultMap">
     SELECT
     *
     FROM
     t_task
-    WHERE task_name LIKE #{taskName}
+    WHERE task_name LIKE '%${_parameter}%'
 
   </select>
 
@@ -46,7 +46,8 @@
     <include refid="Base_Column_List" />
 from t_rele as r
 left join t_task as t on r.rele_task_id=t.task_id
-where r.rele_user_id="1"
+where r.rele_user_id=#{userId}
+AND r.rele_type!=#{releTypeBeClaim}
 
   </select>
 
@@ -68,7 +69,7 @@ where r.rele_user_id="1"
       #{taskStartTime,jdbcType=TIMESTAMP}, #{taskEndTime,jdbcType=TIMESTAMP}, #{taskStatus,jdbcType=CHAR}, 
       #{taskDescription,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.cqz.model.Task" >
+  <insert id="insertSelective" parameterType="com.cqz.model.Task"  useGeneratedKeys="true" keyProperty="taskId" keyColumn="task_id">
     insert into t_task
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="taskId != null" >

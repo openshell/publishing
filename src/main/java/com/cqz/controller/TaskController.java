@@ -24,7 +24,7 @@ public class TaskController {
     @RequestMapping(value = "/all")
     public Msg findAllTask(@RequestParam(name = "pageNum", required = false, defaultValue = "1")
                                        int pageNum,
-                           @RequestParam(name = "pageSize", required = false, defaultValue = "10")
+                           @RequestParam(name = "pageSize", required = false, defaultValue = "5")
                                        int pageSize){
         return Msg.success().add("pageInfo",taskService.findAllTask(pageNum,pageSize));
 
@@ -34,19 +34,20 @@ public class TaskController {
     @RequestMapping(value="/save",method= RequestMethod.POST)
     public Msg saveTask(Task task){
         System.out.println(task.toString());
-
-        if(taskService.saveTask(task)>0){
-            return Msg.success();
-        }else{
-            return Msg.fail();
+        String selectPeop[] =task.getTaskSelectPeople().split(",");
+        int[] userId = new int[selectPeop.length];
+        for(int i=0;i<selectPeop.length;i++){
+            userId[i] = Integer.parseInt(selectPeop[i]);
         }
+        taskService.saveTask(userId,task);
+        return Msg.success();
     }
 
     @ResponseBody
     @RequestMapping(value="/searchByName",method= RequestMethod.GET)
     public Msg searchKey( @RequestParam(name = "pageNum", required = false, defaultValue = "1")
                                       int pageNum,
-                          @RequestParam(name = "pageSize", required = false, defaultValue = "10")
+                          @RequestParam(name = "pageSize", required = false, defaultValue = "5")
                                       int pageSize,
                             @RequestParam(name="searchKey",required = false)
         String searchKey
@@ -79,14 +80,11 @@ public class TaskController {
     @ResponseBody
     @RequestMapping(value="/claim",method= RequestMethod.GET)
     public Msg claimTask(@RequestParam(name="taskId",required = false) int taskId,
-        @RequestParam(name="userId",required = false) int userId
-        ){
+        @RequestParam(name="userId",required = false) int userId,
+        @RequestParam(name="taskType",required = false) String  taskType    ){
 
-        if(taskService.claimTask(taskId,userId)>1){
-            return Msg.success();
-        }else{
-            return Msg.fail();
-        }
+        return taskService.claimTask(taskId,userId,taskType);
+
     }
 
     @RequestMapping(value = "/toAllTask")

@@ -144,7 +144,7 @@ div.sp_result_area.shadowDown{
     box-shadow: 0 3px 12px rgba(0,0,0,0.2);
     -moz-box-shadow: 0 3px 12px rgba(0,0,0,0.2);
     -webkit-box-shadow: 0 3px 12px rgba(0,0,0,0.2);
-
+    z-index: 11100;
     -webkit-animation: dropDownFadeInDown 200ms cubic-bezier(.23,1,.32,1);
     animation: dropDownFadeInDown 200ms cubic-bezier(.23,1,.32,1);
 }
