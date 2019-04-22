@@ -20,7 +20,7 @@ public class FormatDate {
      * @return java.lang.String
      */
     public static String getFormatDateWithTime(java.util.Date date){
-        java.text.DateFormat format1 = new java.text.SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        java.text.DateFormat format1 = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String  formatDate=format1.format(date);
         return formatDate;
     }

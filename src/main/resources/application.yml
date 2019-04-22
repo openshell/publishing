@@ -52,4 +52,4 @@ pagehelper:
 
 logging:
   level:
-    com.cqz.*: INFO
+    com.cqz.*: DEBUG

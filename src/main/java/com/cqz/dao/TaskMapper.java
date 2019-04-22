@@ -1,6 +1,7 @@
 package com.cqz.dao;
 
 import com.cqz.model.Task;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
  * @Author: openshell
  * @Description:
  */
+@Mapper
 public interface TaskMapper {
     /**
      *  通过主键删除任务
@@ -90,5 +92,23 @@ public interface TaskMapper {
      */
     List<Task> selectBackLog(@Param("userId")int userId, @Param("releTypeBeClaim") String releTypeBeClaim);
 
+    /**
+     * 
+     * @author openshell
+     * @date 2019/4/19
+     * @param [userId, releTypeBeSelect, taskTypeCorrdination, taskTypeClaim, releTypeBeClaim]
+     * @return java.util.List<com.cqz.model.Task>
+     */
+    List<Task> selectTaskAvailable(@Param("userId")int userId, @Param("releTypeBeSelect")String releTypeBeSelect,
+                            @Param("taskTypeCorrdination")String taskTypeCorrdination, @Param("taskTypeClaim")String taskTypeClaim, @Param("releTypeBeClaim")String releTypeBeClaim);
 
+
+    /**
+     *
+     * @author openshell
+     * @date 19
+     * @param [taskStartTime, taskEndTime]
+     * @return java.util.List<com.cqz.model.Task>
+     */
+    List<Task> selectTaskByTime(@Param("taskStartTime")String taskStartTime, @Param("taskEndTime")String taskEndTime);
 }

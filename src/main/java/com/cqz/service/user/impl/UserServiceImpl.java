@@ -44,6 +44,25 @@ public class UserServiceImpl implements UserService {
         return pageInfo;
     }
 
+    /**
+     *  新建 任务时，调用人员列表
+     * @author openshell
+     * @date 2019/4/22
+     * @param []
+     * @return java.util.List<com.cqz.model.User>
+     */
+    @Override
+    public List<User> findAllUsers() {
+        List<User> users= userMapper.selectAllUser();
+        for (User user: users) {
+            user.setFormatUserRegisterTime(FormatDate.getFormatDateWithTime(user.getUserRegisterTime()));
+            user.setFormatUserLoginTime(FormatDate.getFormatDateWithTime(user.getUserLoginTime()));
+
+        }
+        return users;
+    }
+
+
     @Override
     public User getUserByName(String userName) {
         User user=userMapper.selectByUserName(userName);
@@ -56,5 +75,11 @@ public class UserServiceImpl implements UserService {
     public int checkName(String userName) {
 
         return userMapper.countUserByName(userName);
+    }
+
+    @Override
+    public void updateLoginTime(User user) {
+        user.setUserLoginTime(new Date());
+        userMapper.updateByPrimaryKeySelective(user);
     }
 }

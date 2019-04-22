@@ -30,11 +30,11 @@
     </ul>
     <ul class="app-nav">
     </ul>
-    <a class="app-regtime">
-        登录时间:
+    <p class="app-regtime app-sidebar__user-name">
+        上次登录时间:
         <span th:text="${session.loginUser.formatUserLoginTime}"></span>
 
-    </a>
+    </p>
     <ul class="app-nav">
         <a class="app-nav__item" href="/user/logout" >退出</a>
     </ul>
@@ -147,8 +147,8 @@
             var userName = $("<td></td>").append(item.userName);
             var realName = $("<td></td>").append(item.userRealname);
             var registerTime = $("<td></td>").append(item.formatUserRegisterTime);
-            console.log(item.userStatus = 'enable' ? "启用" : "禁用");
-            var status = $("<td></td>").append(item.userStatus = 'enable' ? "启用" : "禁用");
+           // item.userStatus = ('enable' ? "启用" : "禁用")
+            var status = $("<td></td>").append(item.userStatus == 'enable' ? "启用" : "禁用");
             $("<tr></tr>").append(userId).append(userName).append(realName).append(registerTime).append(status).appendTo("#users_table tbody");
         });
     }

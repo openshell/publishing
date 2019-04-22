@@ -47,7 +47,7 @@
 from t_rele as r
 left join t_task as t on r.rele_task_id=t.task_id
 where r.rele_user_id=#{userId}
-AND r.rele_type!=#{releTypeBeClaim}
+AND r.rele_type=#{releTypeBeClaim}
 
   </select>
 
@@ -182,4 +182,28 @@ AND r.rele_type!=#{releTypeBeClaim}
       task_description = #{taskDescription,jdbcType=VARCHAR}
     where task_id = #{taskId,jdbcType=INTEGER}
   </update>
+  <select id="selectTaskAvailable"  resultMap="BaseResultMap">
+select <include refid="Base_Column_List" />
+from t_rele as r
+join t_task as t
+on r.rele_task_id=t.task_id
+where rele_user_id=#{userId} and rele_type=#{releTypeBeSelect}
+and
+		(t.task_type=#{taskTypeCorrdination} or
+					(t.task_type=#{taskTypeClaim} and r.rele_task_id not in
+								(select rele_task_id from t_rele  where rele_type=#{releTypeBeClaim})
+					)
+		)
+
+  </select>
+
+  <select id="selectTaskByTime" resultMap="BaseResultMap">
+
+    SELECT *
+    FROM t_task t
+    WHERE t.task_start_time
+    BETWEEN #{taskStartTime} AND #{taskEndTime}
+  </select>
+
+
 </mapper>

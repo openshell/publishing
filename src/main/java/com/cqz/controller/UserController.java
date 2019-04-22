@@ -3,14 +3,22 @@ package com.cqz.controller;
 import com.cqz.model.Msg;
 import com.cqz.model.User;
 import com.cqz.service.user.UserService;
+import com.cqz.utils.FormatDate;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author openshell
@@ -40,7 +48,16 @@ public class UserController {
 
 
     @PostMapping("/add")
-    public String  addUser(User user){
+    public String  addUser(@Valid User user, BindingResult result){
+        if(result.hasErrors()){
+            List<FieldError> filedErrorList=result.getFieldErrors();
+            Map<String ,Object> errorMap=new HashMap<>();
+            for (FieldError fieldError: filedErrorList){
+               errorMap.put(fieldError.getField(),fieldError.getDefaultMessage());
+                return "/account/errorReg";
+            }
+
+        }
         if(userService.addUser(user)==1){
           return   "redirect:/user/login?userName="+user.getUserName()+"&userPassword="+user.getUserPassword();
         }else {
@@ -58,7 +75,18 @@ public class UserController {
         return Msg.success().add("pageInfo",userService.findAllUser(pageNum,pageSize));
     }
 
-
+    /**
+     * 人员选择使用
+     * @author openshell
+     * @date 2019/4/22
+     * @param []
+     * @return com.cqz.model.Msg
+     */
+    @ResponseBody
+    @GetMapping("/alls")
+    public Msg findAllUsers(){
+        return Msg.success().add("pageInfo",userService.findAllUsers());
+    }
 
     @RequestMapping(value="/login",method=RequestMethod.GET)
     public String getLogin(@RequestParam("userName")String userName, @RequestParam("userPassword")String userPassword, HttpServletRequest request) {
@@ -69,9 +97,11 @@ public class UserController {
         try {
             subject.login(token);
             User user=userService.getUserByName(userName);
+
             request.getSession().setAttribute("loginUser", user);
             System.out.println("验证账户是否为启用："+subject.isPermitted("enable"));
             if(subject.isPermitted("enable")) {
+                userService.updateLoginTime(user);
                 request.getSession().setAttribute("loginUser",user);
                 return "/account/backLog";
             }
@@ -87,7 +117,7 @@ public class UserController {
 
     @RequestMapping(value="/toAllUser")
     public String toAllUser(){
-        return "account/allUser";
+        return "/account/allUser";
     }
 
     @RequestMapping(value={"toLogin","logout"})

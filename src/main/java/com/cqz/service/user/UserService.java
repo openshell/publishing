@@ -3,6 +3,8 @@ package com.cqz.service.user;
 import com.cqz.model.User;
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
+
 /**
  * @author openshell
  * @date 2019/4/16
@@ -19,10 +21,21 @@ public interface UserService {
      */
     int addUser(User user);
 
+
+
     /**
-     * 查询所有用户
+     * 
      * @author openshell
-     * @date 2019/4/16
+     * @date 2019/4/21
+     * @param []
+     * @return java.util.List<com.cqz.model.User>
+     */
+    List<User> findAllUsers();
+
+    /**
+     * 不分页查询
+     * @author openshell
+     * @date 2019/4/21
      * @param [pageNum, pageSize]
      * @return com.github.pagehelper.PageInfo<com.cqz.model.User>
      */
@@ -45,4 +58,6 @@ public interface UserService {
      * @return java.lang.Boolean
      */
     int checkName(String userName);
+
+    void updateLoginTime(User user);
 }

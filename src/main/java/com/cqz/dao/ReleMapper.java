@@ -1,8 +1,10 @@
 package com.cqz.dao;
 
 import com.cqz.model.Rele;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+@Mapper
 public interface ReleMapper {
     int deleteByPrimaryKey(Integer releId);
 
@@ -36,7 +38,8 @@ public interface ReleMapper {
      * @param userId, taskId, releTypeSelfSelect
      * @return int
      */
-    int selectIsBeSelectBySelf(@Param("userId")int userId, @Param("taskId")int taskId, @Param("releTypeSelfSelect")String releTypeSelfSelect);
+    
+    int selectIsBeSelectBySelf(@Param("userId")int userId, @Param("taskId")int taskId, @Param("releTypeBeClaim")String releTypeBeClaim);
 
     /**
      * 通过taskId 和userId唯一确定一条关联记录，并查询是否被选中(被选中返回1，否则返回0)
@@ -55,5 +58,14 @@ public interface ReleMapper {
      * @param taskId, userId, releTypeBeClaim
      * @return int
      */
-    int selectIsBeClaim(@Param("taskId")int taskId, @Param("userId")int userId,@Param("releTypeBeClaim") String releTypeBeClaim);
+    int selectIsBeClaim(@Param("taskId")int taskId,@Param("releTypeBeClaim") String releTypeBeClaim);
+
+    int selectTaskAvailable(@Param("userId")int userId, @Param("releTypeBeSelect")String releTypeBeSelect,
+                            @Param("taskTypeCorrdination")String taskTypeCorrdination, @Param("taskTypeClaim")String taskTypeClaim, @Param("releTypeBeClaim")String releTypeBeClaim);
+
+
+    int selectCoorTaskOverCount(@Param("taskId")int taskId,
+                                @Param("releTypeBeClaim")String releTypeBeClaim,
+                                @Param("releTypeBeSelect") String releTypeBeSelect,
+                                @Param("taskTypeCorrdination")String taskTypeCorrdination);
 }

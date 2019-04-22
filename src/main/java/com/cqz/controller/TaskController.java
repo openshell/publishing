@@ -26,6 +26,7 @@ public class TaskController {
                                        int pageNum,
                            @RequestParam(name = "pageSize", required = false, defaultValue = "5")
                                        int pageSize){
+
         return Msg.success().add("pageInfo",taskService.findAllTask(pageNum,pageSize));
 
     }
@@ -61,13 +62,24 @@ public class TaskController {
     @RequestMapping(value="/allBackLog",method= RequestMethod.GET)
     public Msg searchKey( @RequestParam(name = "pageNum", required = false, defaultValue = "1")
                                   int pageNum,
-                          @RequestParam(name = "pageSize", required = false, defaultValue = "10")
+                          @RequestParam(name = "pageSize", required = false, defaultValue = "5")
                                   int pageSize,
                           @RequestParam(name="userId",required = false)
                                   int userId
     ){
 
         return Msg.success().add("pageInfo",taskService.selectBackLog(userId,pageNum,pageSize));
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/updateTask", method=RequestMethod.GET)
+    public Msg overTask(@RequestParam(name="taskId")int taskId,
+                        @RequestParam(name="taskDescription")String taskDescription,
+                        @RequestParam(name="userId")int userId
+    ){
+
+        return taskService.overTask(taskId,userId,taskDescription);
+
     }
 
     @ResponseBody
@@ -86,6 +98,40 @@ public class TaskController {
         return taskService.claimTask(taskId,userId,taskType);
 
     }
+    @ResponseBody
+    @RequestMapping(value="/getBacklogNum",method= RequestMethod.GET)
+    public Msg getBacklogNum( @RequestParam(name="userId",required = false) int userId){
+
+        return taskService.getBacklogNum(userId);
+
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/canClaim",method= RequestMethod.GET)
+    public Msg getCanClaim(@RequestParam(name = "pageNum", required = false, defaultValue = "1")
+                                       int pageNum,
+                           @RequestParam(name = "pageSize", required = false, defaultValue = "5")
+                                       int pageSize,
+                           @RequestParam(name="userId",required = false)
+                                       int userId){
+
+        return taskService.getCanClaimTask(userId,pageNum,pageSize);
+
+    }
+    @ResponseBody
+    @RequestMapping(value="/serachTaskByTime",method= RequestMethod.POST)
+    public Msg getserachTaskByTime(@RequestParam(name = "pageNum", required = false, defaultValue = "1")
+                                       int pageNum,
+                           @RequestParam(name = "pageSize", required = false, defaultValue = "5")
+                                       int pageSize,
+                           @RequestParam(name="taskStartTime",required = false) String taskStartTime,
+                                   @RequestParam(name="taskEndTime",required = false) String taskEndTime){
+
+        return taskService.getserachTaskByTime(taskStartTime,taskEndTime,pageNum,pageSize);
+
+    }
+
+
 
     @RequestMapping(value = "/toAllTask")
     public String toAllTask(){

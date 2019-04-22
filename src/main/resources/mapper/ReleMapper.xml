@@ -13,6 +13,8 @@
 
 
 
+
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
@@ -99,7 +101,7 @@ SELECT
 COUNT(*)
 FROM t_rele r
 WHERE r.rele_task_id=#{taskId}
-AND r.rele_user_id=#{userId}
+
 AND r.rele_type=#{releTypeBeClaim}
 
   </select>
@@ -108,18 +110,42 @@ SELECT COUNT(*)
 FROM t_rele r
 WHERE r.rele_user_id=#{userId}
 AND r.rele_task_id=#{taskId}
-AND r.rele_type=#{releTypeSelfSelect}
+AND r.rele_type=#{releTypeBeClaim}
 
   </select>
+  <select id="selectTaskAvailable" resultType="java.lang.Integer">
+select COUNT(*)
+from t_rele as r
+join t_task as t
+on r.rele_task_id=t.task_id
+where rele_user_id=#{userId} and rele_type=#{releTypeBeSelect}
+and
+		(t.task_type=#{taskTypeCorrdination} or
+					(t.task_type=#{taskTypeClaim} and r.rele_task_id not in
+								(select rele_task_id from t_rele  where rele_type=#{releTypeBeClaim})
+					)
+		)
+
+  </select>
+
+
   <update id="updateReleType" >
 UPDATE t_rele r
 SET r.rele_type=#{releTypeBeClaim}
 WHERE r.rele_user_id=#{userId}
-AND r.rele_task_id=#{taskId};
+AND r.rele_task_id=#{taskId}
 
   </update>
 
-
+<select id="selectCoorTaskOverCount" resultType="java.lang.Integer">
+  SELECT
+COUNT(*)
+FROM t_rele r
+left join t_task t
+on r.rele_task_id=t.task_id
+WHERE r.rele_task_id=32 and ( r.rele_type=#{releTypeBeClaim} or r.rele_type=#{releTypeBeSelect})
+and t.task_type=#{taskTypeCorrdination}
+</select>
 
 
 

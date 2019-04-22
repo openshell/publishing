@@ -10,16 +10,30 @@
  
 <!-- 插件使用的样式表文件 -->
 <link rel="stylesheet" href="./css/selectpage.css" type="text/css">
- 
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" type="text/css">
 <!-- 插件核心脚本 -->
 
 </head>
 <body>
 
 <input type="text" id="selectPage" >
+toastr.info('Are you the 6 fingered man?')
 <button type="button" class="btn btn-default" id="func1"><i class="fa fa-file-text-o"></i> 获得选中项目的文本内容</button>
-<script src="https://upcdn.b0.upaiyun.com/libs/jquery/jquery-2.0.2.min.js"></script>
 
+<select class="form-control input-sm" id="selectClaim" name="empDeptId"><option value="1">管理部</option><option value="2">销售部</option></select>
+
+	<div>
+		<ul>
+			<li><button type="button" onclick="success1()">success</button></li>		
+			<li><button type="button" onclick="error1()">error</button></li>		
+			<li><button type="button" onclick="info1()">info</button></li>		
+			<li><button type="button" onclick="warning1()">warning</button></li>		
+		</ul>
+	</div>	
+
+
+<script src="https://upcdn.b0.upaiyun.com/libs/jquery/jquery-2.0.2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 
 <script src="./js/selectpage.js" ></script>
@@ -31,11 +45,53 @@
 	
 	<script type="text/javascript">
 	
+	$(function(){    //自定义参数
+			toastr.options = {  
+			        closeButton: false,  	//是否显示关闭按钮（提示框右上角关闭按钮）。
+			        debug: false,  			//是否为调试。
+			        progressBar: true,  	//是否显示进度条（设置关闭的超时时间进度条）
+			        positionClass: "toast-top-center",  	//消息框在页面显示的位置
+			        onclick: window.location.href = "http://www.jb51.net",  		//点击消息框自定义事件 
+			        showDuration: "300",  	//显示动作时间 
+			        hideDuration: "1000",  	//隐藏动作时间
+			        timeOut: "2000",  		//自动关闭超时时间 
+			        extendedTimeOut: "1000",  
+			        showEasing: "swing",  
+			        hideEasing: "linear",  
+			        showMethod: "fadeIn",  	//显示的方式，和jquery相同
+			        hideMethod: "fadeOut"  	//隐藏的方式，和jquery相同
+			        //等其他参数
+			    };  
+		});
+		function success1(){
+			toastr.success('success有消息了');	//ajax回调函数 toastr.success(data.message);
+		}
+		
+	
+	
+	$(function(){
 
+		
+	});
+$("#fieldTask").change(function(){
+	if($("#selectClaim").val()==1){
+		alert("管理部门");
+	}else{
+		alert("销售部门");
+	}
+});
 
 	
 var tag_data = [
     {id:1 ,name:'Chicago Bulls',desc:'芝加哥公牛'},
+    {id:2 ,name:'Cleveland Cavaliers',desc:'克里夫兰骑士'},
+    {id:3 ,name:'Detroit Pistons',desc:'底特律活塞'},
+    {id:4 ,name:'Indiana Pacers',desc:'印第安纳步行者'},
+	 {id:1 ,name:'Chicago Bulls',desc:'芝加哥公牛'},
+    {id:2 ,name:'Cleveland Cavaliers',desc:'克里夫兰骑士'},
+    {id:3 ,name:'Detroit Pistons',desc:'底特律活塞'},
+    {id:4 ,name:'Indiana Pacers',desc:'印第安纳步行者'},
+	 {id:1 ,name:'Chicago Bulls',desc:'芝加哥公牛'},
     {id:2 ,name:'Cleveland Cavaliers',desc:'克里夫兰骑士'},
     {id:3 ,name:'Detroit Pistons',desc:'底特律活塞'},
     {id:4 ,name:'Indiana Pacers',desc:'印第安纳步行者'}

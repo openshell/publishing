@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="/css/main.css">
     <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
     <link rel="stylesheet" href="/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" type="text/css">
     <!-- 引入时间插件-->
     <link rel="stylesheet" type="text/css"
           href="/css/bootstrap-datetimepicker.css"
@@ -37,10 +38,8 @@
         <img class="app-sidebar__user-avatar"
              src="/img/admin.png" alt="User Image">
         <div>
-            <p class="app-sidebar__user-name">
-                <shiro:user>
-                    <shiro:principal/>
-                </shiro:user>
+            <p class="app-sidebar__user-name" th:text="${session.loginUser.userRealname}">
+
             </p>
             </p>
 
@@ -116,7 +115,7 @@
                                      <span
                                         class="help-block"></span>
                                 </div>
-                                <input type="hidden" name="taskCharge" th:value="${session.loginUser.userName}" >
+                                <input type="hidden" name="taskCharge" th:value="${session.loginUser.userRealname}" >
                             </div>
 
                         </form>
@@ -279,42 +278,43 @@
         </div>
 
             <div class="row">
-            <div class="col-md-7">
-                <div class="navbar-form navbar-left" role="search">
+            <div class="col-md-5 pl-1 pr-1">
+                <div class="navbar-form navbar-left pl-2" role="search">
                     <div class="form-group">
-                        <div class="input-group col-xs-2">
-                            时间检索
-                        </div>
+                            时间检索:
                         <div class="input-group date col-xs-4" id="yyyy_mm_dd">
-                            <input name="regDate" class="form-control" type="text" value="" readonly="readonly"> <span
+                            <input name="regDate" class="form-control input-sm" id="startTime" type="text" value="" readonly="readonly"> <span
                                 class="input-group-addon" style="opacity: 0.8;"> <span
                                 class="glyphicon glyphicon-remove"></span>
 									</span>
                         </div>
                         至
                         <div class="input-group date col-xs-4" id="yyyy_mm_dd2">
-                            <input name="regDate" class="form-control" type="text" value="" readonly="readonly"> <span
+                            <input name="regDate" class="form-control input-sm" id="endTime" type="text" value="" readonly="readonly"> <span
                                 class="input-group-addon" style="opacity: 0.8;"> <span
                                 class="glyphicon glyphicon-remove"></span>
 									</span>
                         </div>
-                        <button class="btn btn-primary" >查询</button>
+                        <button class="btn btn-primary btn-sm"  id="serachTaskByTime">查询</button>
                     </div>
 
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3 pl-1 pr-1">
                 <div class="navbar-form navbar-left" role="search">
                     <div class="form-group">
-                        <input type="text" class="form-control form-custom" id="searchKey" placeholder="任务名称检索">
+                        <input type="text" class="form-control form-custom input-sm" id="searchKey" placeholder="任务名称检索">
                     </div>
-                    <button class="btn btn-primary" id="searchByName">搜索</button>
+                    <button class="btn btn-primary btn-sm" id="searchByName">搜索</button>
                 </div>
             </div>
-            <div class="col-md-1">
+                <div class="col-md-2 pt-2 pl-1 pr-1">
+                    <select class="form-control input-sm" id="fieldTask" name="fieldTask"  placeholder="过滤条件"> <option value="" disabled selected hidden>请选择要显示的任务</option><option value="1">全部任务</option><option value="2">待领任务</option><option value="3">进行中的</option><option value="4">办结任务</option></select>
+                </div>
+            <div class="col-md-1 pl-1 pr-1">
                 <div class="navbar-form navbar-right" role="search">
                 <div class="form-group">
-                <button class="btn btn-primary" id="task_add_modal_btn">新建任务</button>
+                <button class="btn btn-success btn-sm" id="task_add_modal_btn">新建任务</button>
                 </div>
                 </div>
             </div>
@@ -349,6 +349,7 @@
 
         </div>
     </div>
+
 </main>
 
 
@@ -359,7 +360,7 @@
 <script src="/js/bootstrap-datetimepicker.min.js"></script>
 <script src="/js/bootstrap-datetimepicker.zh-CN.js"></script>
 <script src="/js/bulid.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <!-- 下拉分页插件核心脚本 -->
 <script src="/js/selectpage.js"></script>
 
@@ -367,13 +368,64 @@
 <script type="text/javascript">
     var totalRecord;
     var userId=$("#userId").val();
-    var pageSer=1;
     var virtulNum = new Array();
+    var tag_data;
+
     $(function () {
         to_page(1);
         getUsers(1);
+
     });
 
+
+    function show_validate_msg(ele, status, msg) {
+        //清除当前元素的校验状态
+        $(ele).parent().removeClass("has-success has-error");
+        $(ele).next("span").text("");
+        if ("success" == status) {
+            $(ele).parent().addClass("has-success");
+            $(ele).next("span").text(msg);
+        } else if ("error" == status) {
+            $(ele).parent().addClass("has-error");
+            $(ele).next("span").text(msg);
+        }
+    }
+    $("#fieldTask").change(function(){
+        var fieldType=$("#fieldTask").val();
+        if(fieldType==1){
+            //全部任务
+            to_page(1);
+        }
+        if(fieldType==2){
+            //待领任务
+            to_claimPage(1);
+            alert("待领任务！");
+
+        }
+        if(fieldType==3){
+            //进行中的任务
+        }
+        if(fieldType==4){
+            //办结任务
+        }
+    });
+
+    //分页查询个人可领的任务
+    function to_claimPage(pn){
+        $.ajax({
+            url: "/task/canClaim",
+            data: "pageNum=" + pn+"&userId="+userId,
+            type: "GET",
+            success: function (result) {
+                console.log(result);
+                bulid_page_table(result);
+                bulid_page_info(result);
+                bulid_page_nav(result)
+            }
+         });
+    }
+
+    //分页查询全部任务请求
     function to_page(pn) {
         $.ajax({
             url: "/task/all",
@@ -387,6 +439,7 @@
             }
         });
     }
+    //分页页码
     function getVirtulNum(result) {
         var b = 1;
         for (var k = 0; k < result.extend.pageInfo.pages; k++) {
@@ -397,6 +450,7 @@
             }
         }
     }
+    //构建表格
     function bulid_page_table(result) {
         $("#task_table tbody").empty();
         getVirtulNum(result);
@@ -414,19 +468,7 @@
             var formatTaskStartTime = $("<td></td>").append(item.formatTaskStartTime);
             var editBtn =null;
             if (item.taskStatus==1){
-                status='待领';
-                editBtn = $("<button></button>")
-                    .addClass(
-                        "btn btn-primary btn-sm edit_btn")
-                    .append(
-                        $("<span></span>")
-                            .addClass(
-                                "glyphicon glyphicon-pencil"))
-                    .append("认领");
-                //给编辑按钮添加属性，绑定任务id
-                editBtn.attr("edit-id", item.taskId);
-            } else if(item.taskStatus==2){
-                status="进行中";
+                status='进行中';
                 editBtn = $("<button></button>")
                     .addClass(
                         "btn btn-primary btn-sm btn-info")
@@ -437,16 +479,28 @@
                     .append("查看");
                 //给编辑按钮添加属性，绑定任务id
                 editBtn.attr("edit-id", item.taskId);
-            }else if(item.taskStatus==3){
-                status ="办结";
+            } else if(item.taskStatus==2){
+                status="办结";
                 editBtn = $("<button></button>")
                     .addClass(
-                        "btn btn-primary btn-sm btn-success")
+                        "btn btn-primary btn-sm  btn-success")
                     .append(
                         $("<span></span>")
                             .addClass(
                                 "glyphicon glyphicon-pencil"))
                     .append("查看");
+                //给编辑按钮添加属性，绑定任务id
+                editBtn.attr("edit-id", item.taskId);
+            }else if(item.taskStatus==3){
+                status ="待领";
+                editBtn = $("<button></button>")
+                    .addClass(
+                        "btn btn-primary btn-sm  edit_btn")
+                    .append(
+                        $("<span></span>")
+                            .addClass(
+                                "glyphicon glyphicon-pencil"))
+                    .append("认领");
                 //给编辑按钮添加属性，绑定任务id
                 editBtn.attr("edit-id", item.taskId);
             }
@@ -456,7 +510,6 @@
                 .append(formatTaskStartTime).append(taskStatus).append(btnTd).appendTo("#task_table tbody");
         });
     }
-
     //解析显示分页信息
     function bulid_page_info(result) {
         $("#page_info_area").empty();
@@ -467,7 +520,7 @@
         totalRecord = result.extend.pageInfo.total;
         currentPage = result.extend.pageInfo.pageNum;
     }
-
+    //构建翻页条
     function bulid_page_nav(result) {
         //page_nav_area
         $("#page_nav_area").empty();
@@ -530,40 +583,33 @@
 
     }
 
-    //认领模态框
-    $(document).on("click", ".edit_btn", function() {
-        getTask($(this).attr("edit-id"))
-       // $("#task_edit_btn").attr("edit_id",$(this).attr("edit-id"));
-        $("#taskClaimModal").modal({
-            backdrop : "static"
+    //获取用户
+    function getUsers(pn){
+        $.ajax({
+            url:"/user/alls",
+            type:"GET",
+            async: false,
+            success:function (result) {
+
+                tag_data=result.extend.pageInfo;
+
+                initSelecPage();
+            }
         });
-    });
-    //查看信息模态框
-    $(document).on("click", ".btn-info", function() {
-        getTask($(this).attr("edit-id"))
-
-        $("#taskInfoModal").modal({
-            backdrop : "static"
-        });
-    });
-
-
-
-
-
-    var tag_data;
+    }
+    //初始化下拉插件
     function initSelecPage(){
         //初始化插件
         $('#selectPage').selectPage(
             {
-                showField : 'userName',
+                showField : 'userRealname',
                 keyField : 'userId',
                 data :tag_data,
                 multiple : true
             });
     }
 
-    //发送认领定位
+    //发送认领请求
     $("#task_claim_save_btn")
         .click(function(){
             $.ajax({
@@ -584,7 +630,8 @@
                 }
             });
         });
-    //按时间搜索
+
+    //按任务名称搜索请求
     $("#searchByName").click(function(){
         var  pn=1;
         $.ajax({
@@ -600,14 +647,8 @@
             }
         });
     });
-    //清空表单样式及内容
-    function reset_form(ele) {
-        $(ele)[0].reset();
-        //清空表单样式
-        $(ele).find("*").removeClass("has-error has-success");
-        $(ele).find(".help-block").text("");
-    }
-    //根据taskId 获取任务
+
+    //根据taskId 获取任务请求
     function getTask(taskId) {
         $.ajax({
             url : "/task/getById?taskId=" + taskId,
@@ -629,10 +670,9 @@
             }
         });
     }
+
     //发送新建任务信息
-    $("#task_save_btn")
-        .click(
-            function() {
+    $("#task_save_btn") .click( function() {
                 //var userIds=$("#selectPage").val();
                 $.ajax({
                     url : "/task/save",
@@ -654,26 +694,30 @@
                 });
             });
 
-    function getUsers(pn){
-        $.ajax({
-            url:"/user/all",
-            date:"pageNum"+pn,
-            type:"GET",
-            async: false,
-            success:function (result) {
-                tag_data=result.extend.pageInfo.list;
-                console.log(tag_data);
-                initSelecPage();
-            }
-        });
-    }
-
 
 
     //新建任务模态框
     $("#task_add_modal_btn").click(function() {
         reset_form("#taskAddModal form");
         $("#taskAddModal").modal({
+            backdrop : "static"
+        });
+    });
+
+    //认领模态框
+    $(document).on("click", ".edit_btn", function() {
+        getTask($(this).attr("edit-id"))
+        // $("#task_edit_btn").attr("edit_id",$(this).attr("edit-id"));
+        $("#taskClaimModal").modal({
+            backdrop : "static"
+        });
+    });
+
+    //查看信息模态框
+    $(document).on("click", ".btn-info", function() {
+        getTask($(this).attr("edit-id"))
+
+        $("#taskInfoModal").modal({
             backdrop : "static"
         });
     });
@@ -706,7 +750,49 @@
         todayHighlight: 1
     });
 
+    $("#serachTaskByTime").click(function(){
+            console.log($("#startTime").val()+"-"+$("#endTime").val());
+            var startTime=$("#startTime").val();
+            var endTime=$("#endTime").val();
 
+            $.ajax({
+                url : "/task/serachTaskByTime",
+                data : "taskStartTime=" + startTime+"&taskEndTime="+endTime,
+                type : "POST",
+                success : function(result) {
+                    if (result.code == 100) {
+                        bulid_page_table(result);
+                    } else {
+                        alert("查询失败！")
+                    }
+                }
+            });
+
+
+    });
+
+    //校验用户名是否可用
+    $("#taskName_add_input").change(
+        function() {
+            //发送ajax请求校验任务名是否可用
+            var taskName = this.value;
+            $.ajax({
+                url : "/task/checkTask",
+                data : "taskName=" + taskName,
+                type : "POST",
+                success : function(result) {
+                    if (result.code == 100) {
+                        show_validate_msg("#taskName_add_input",
+                            "success", "用户名可用");
+                        $("#task_save_btn").attr("ajax-va", "success"); //数据校验成功则允许保存
+                    } else {
+                        show_validate_msg("#taskName_add_input",
+                            "error", result.extend.val_msg);
+                        $("#task_save_btn").attr("ajax-va", "error");
+                    }
+                }
+            });
+        });
 </script>
 
 </body>

@@ -1,5 +1,6 @@
 package com.cqz.model;
 
+import javax.validation.constraints.Pattern;
 import java.util.Date;
 /**
  * @Author: openshell
@@ -11,6 +12,7 @@ public class User {
 
     private String userName;
 
+    @Pattern(regexp = "^[0-9a-zA-Z_]{6,15}$", message = "密码必须是6-15位，并且含有字母或者数字(JSR303校验)")
     private String userPassword;
 
     private String userRealname;
